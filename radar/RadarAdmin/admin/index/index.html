@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>网站后台管理模版</title>
+		<link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+	</head>
+	<body>
+		<div class="main-layout" id='main-layout'>
+			<!--侧边栏-->
+			<div class="main-layout-side">
+				<div class="m-logo">
+										
+				</div>
+				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
+				  <li class="layui-nav-item layui-nav-itemed">
+				    <a href="javascript:;"><i class="iconfont">&#xe607;</i>维修任务管理</a>
+				    <dl class="layui-nav-child">
+					  <dd><a href="javascript:;" data-url="table/taskTable.html" data-id='1' data-text="任务查询"><span class="l-line"></span>任务查询</a></dd>
+			          <dd><a href="javascript:;" data-url="table/subtaskTable.html" data-id='2' data-text="流程查询"><span class="l-line"></span>流程查询</a></dd>
+					  <dd><a href="javascript:;" data-url="table/radarmaintenanceTable.html" data-id='16' data-text="雷达维修表"><span class="l-line"></span>雷达维修表</a></dd>
+					  <dd><a href="javascript:;" data-url="table/partinfoTable.html" data-id='3' data-text="资源查询"><span class="l-line"></span>资源查询</a></dd>
+					  <dd><a href="javascript:;" data-url="menu2.html" data-id='4' data-text="进度记录"><span class="l-line"></span>进度记录</a></dd>
+				    </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>维修质量管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="article-list.html" data-id='5' data-text="进度查询"><span class="l-line"></span>进度查询</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='6' data-text="质量问题查询"><span class="l-line"></span>质量问题查询</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='7' data-text="验收"><span class="l-line"></span>验收</a></dd>
+				    </dl>
+				  </li>
+
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>维修档案管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="table/radarinfoTable.html" data-id='8' data-text="装备信息"><span class="l-line"></span>装备信息</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='9' data-text="装备维修技术档案"><span class="l-line"></span>装备维修技术档案</a></dd>
+					  <dd><a href="javascript:;" data-url="danye-list.html" data-id='10' data-text="维修过程信息"><span class="l-line"></span>维修过程信息</a></dd>
+				    </dl>
+				  </li>
+
+				  <li class="layui-nav-item">
+					<a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息"><i class="iconfont">&#xe606;</i>用户权限管理</a>
+					<dl class="layui-nav-child">
+						<dd><a href="javascript:;" data-url="admin-info.html" data-id='11' data-text="用户管理"><span class="l-line"></span>用户管理</a></dd>
+						<dd><a href="javascript:;" data-url="danye-list.html" data-id='12' data-text="用户角色设置"><span class="l-line"></span>用户角色设置</a></dd>
+						<dd><a href="javascript:;" data-url="danye-list.html" data-id='13' data-text="用户权限管理"><span class="l-line"></span>用户权限管理</a></dd>
+						<dd><a href="javascript:;" data-url="danye-list.html" data-id='14' data-text="用户组设置"><span class="l-line"></span>用户组设置</a></dd>
+						<dd><a href="javascript:;" data-url="danye-list.html" data-id='15' data-text="用户组角色设置"><span class="l-line"></span>用户组角色设置</a></dd>
+					  </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				  	<a href="javascript:;" data-url="system.html" data-id='16' data-text="系统设置"><i class="iconfont">&#xe60b;</i>系统设置</a>
+				  </li>
+				</ul>
+			</div>
+			<!--右侧内容-->
+			<div class="main-layout-container">
+				<!--头部-->
+				<div class="main-layout-header">
+					<div class="menu-btn" id="hideBtn">
+						<a href="javascript:;">
+							<span class="iconfont">&#xe60e;</span>
+						</a>
+					</div>
+					<ul class="layui-nav" lay-filter="rightNav">
+					  <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
+					  <li class="layui-nav-item">
+					    <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息">超级管理员</a>
+					  </li>
+					  <li class="layui-nav-item"><a href="javascript:;">退出</a></li>
+					</ul>
+				</div>
+				<!--主体内容-->
+				<div class="main-layout-body">
+					<!--tab 切换-->
+					<div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="tab" lay-allowClose="true">
+					  <ul class="layui-tab-title">
+					    <li class="layui-this welcome">主页</li>
+					  </ul>
+					  <div class="layui-tab-content">
+					    <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
+					    	<!--1-->
+					    	<iframe src="welcome.html" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
+					    	<!--1end-->
+					    </div>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<!--遮罩-->
+			<div class="main-mask">
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			var scope={
+				link:'./welcome.html'
+			}
+		</script>
+		<script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
+		
+	</body>
+</html>
