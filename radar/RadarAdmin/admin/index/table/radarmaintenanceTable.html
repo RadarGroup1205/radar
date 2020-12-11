@@ -13,6 +13,9 @@
   <script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.js"></script>
   <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
   <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
+  <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
   <style>
     .content {
       margin: 50px auto;
@@ -61,8 +64,9 @@
       <button id="btn_delete" type="button" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
       </button>
-      <button id="btn_detail" type="button" class="btn btn-success">
-        <span class="glyphicon glyphicon-detail" aria-hidden="true"></span>查看详情
+      <button id="btn_detail" type="button" class="btn btn-success" >
+        <span class="glyphicon glyphicon-detail" aria-hidden="true">
+        </span>查看详情
       </button>
     </div>
 
@@ -290,7 +294,7 @@
 <script>
 $(function () {
     var table = $('#subtasktable').DataTable({
-      "ajax": {url :"http://127.0.0.1:8081/subtask"},
+      "ajax": {url :"http://127.0.0.1:8081/getsubinfo"},
 
       "columns": [
           { "data": "subtaskId" },
@@ -313,8 +317,8 @@ $(function () {
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间','任务维修周期','负责部门','负责人','任务状态']
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      "ajax": {url :serveUrl + "RadarSelect",
-
+      //"ajax": {url :serveUrl + "RadarSelect",
+      "ajax":{url :"http://127.0.0.1:8081/address"
     }, 
   
       "columns": [
@@ -485,9 +489,27 @@ $(function () {
 
     $('#btn_detail').click(function () {
       //alert(table.rows('.selected').data()[0]);
-      console.log(table.rows('.selected').data()[0].radarmaintenanceId);
+      console.log(table.rows('.selected').data()[0].radarNo);
       console.log('subtask_detail');
-      $("#subtaskDetail").modal()
+      $.ajax({
+        type:"post",
+            url:"http://127.0.0.1:8081/getsubinfo",
+            async:true,
+            data:{
+                radarNo: table.rows('.selected').data()[0].radarNo
+      }
+      }
+      )
+  
+      //$("#subtaskDetail").modal()
+      $.tabAdd('tab', {
+            title: 'text',
+            content: '<iframe src="' + 'taskTable.html' + '" name="iframe' + 'id' + '" class="iframe" framborder="0" data-id="' + 'id' + '" scrolling="auto" width="100%"  height="100%"></iframe>',
+            id: 'id'
+        });
+
+
+
 
 
     });
