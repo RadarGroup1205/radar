@@ -431,9 +431,14 @@ $(function () {
         $("#editBookInfo").modal()
         var rowData = table.rows('.selected').data()[0];
         var inputs = $("#editBookModal").find('input')
-        for (var i = 0; i < inputs.length; i++) {
-          $(inputs[i]).val(rowData[i + 1])
+        var count1=0
+        for (var key in rowData){
+          $(inputs[count1]).val(rowData[key])
+          cout1++
         }
+        // for (var i = 0; i < inputs.length; i++) {
+        //   $(inputs[i]).val(rowData[i + 1])
+        // }
       } else {
         alert('请选择项目');
       }
