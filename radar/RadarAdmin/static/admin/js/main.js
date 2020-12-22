@@ -7,54 +7,120 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog'], function() {
 	var hideBtn = $('#hideBtn');
 	var mainLayout = $('#main-layout');
 	var mainMask = $('.main-mask');
-	//监听导航点击
-	element.on('nav(leftNav)', function(elem) {
-		var navA = $(elem).find('a');
-		var id = navA.attr('data-id');
-		var url = navA.attr('data-url');
-		var text = navA.attr('data-text');
-		if(!url){
-			return;
-		}
-		var isActive = $('.main-layout-tab .layui-tab-title').find("li[lay-id=" + id + "]");
-		if(isActive.length > 0) {
-			//切换到选项卡
-			element.tabChange('tab', id);
-		} else {
+
+	//触发事件
+	var active = {
+		tabAdd:function (name,url,layid) {
 			element.tabAdd('tab', {
-				title: text,
-				content: '<iframe src="' + url + '" name="iframe' + id + '" class="iframe" framborder="0" data-id="' + id + '" scrolling="auto" width="100%"  height="100%"></iframe>',
-				id: id
+				title: name //'选项卡的标题'
+			,content: '<iframe id="iframeMain" style="width: 100%" ; height="100%" ; scrolling="no" frameborder="no" src="'+url+'"></iframe>'//'选项卡的内容' //支持传入html
+			,id: layid//'选项卡标题的lay-id属性值'
 			});
-			element.tabChange('tab', id);
-			
+		},
+		tabChange:function (layid) {
+			element.tabChange('tab', layid);
+		},
+		tabDelete:function (layid) {
+			element.tabDelete('tab', layid);
 		}
-		mainLayout.removeClass('hide-side');
-	});
+	}
+
+
+		  //当点击有siteactive属性的标签时，即左侧菜单栏中内容 ，触发点击事件
+		$('.site-active').on("click", function () {
+			var dataid = $(this);
+			var name = dataid.attr("data-text");
+			var url = dataid.attr("data-url");
+			var tab_layid = dataid.attr("data-id");
+			//alert(1111111)
+			//1、 判断tab-layid=layid的tab页是否打开
+			if ($(".layui-tab-title li[lay-id]").length <= 0) { //1.1 初始状态：1个Tab页也没有打开
+				//alert(2222222)
+				active.tabAdd(name, url, tab_layid); //打开tab页
+				active.tabChange(tab_layid)//转到该tab页
+			} else { //1.2   判断该Tab页是否已打开
+				var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
+				$.each($(".layui-tab-title li[lay-id]"), function () {
+				   
+					//如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+					if ($(this).attr("lay-id") == tab_layid) {
+						isData = true;
+						 
+					}
+				})
+				if (isData == false) {
+					//标志为false 新增一个tab项
+					active.tabAdd(name, url, tab_layid); //1.2.1  该Tab页未打开，则打开该tab页
+				}
+
+				active.tabChange(tab_layid)//1.2.2 转到该tab页
+			}
+
+	  
+			 FrameWH();  //计算ifram层的大小
+
+		});
+
+
+
+		 function FrameWH() { //计算ifram层的大小
+			var h = $(window).height() - 41 - 10 - 60 - 10 - 44 - 10;
+			$("iframe").css("height", h + "px");
+		}
+
+		$(window).resize(function () {
+			FrameWH();
+		})
+
+	
 	//监听导航点击
-	element.on('nav(rightNav)', function(elem) {
-		var navA = $(elem).find('a');
-		var id = navA.attr('data-id');
-		var url = navA.attr('data-url');
-		var text = navA.attr('data-text');
-		if(!url){
-			return;
-		}
-		var isActive = $('.main-layout-tab .layui-tab-title').find("li[lay-id=" + id + "]");
-		if(isActive.length > 0) {
-			//切换到选项卡
-			element.tabChange('tab', id);
-		} else {
-			element.tabAdd('tab', {
-				title: text,
-				content: '<iframe src="' + url + '" name="iframe' + id + '" class="iframe" framborder="0" data-id="' + id + '" scrolling="auto" width="100%"  height="100%"></iframe>',
-				id: id
-			});
-			element.tabChange('tab', id);
+	// element.on('nav(leftNav)', function(elem) {
+	// 	var navA = $(elem).find('a');
+	// 	var id = navA.attr('data-id');
+	// 	var url = navA.attr('data-url');
+	// 	var text = navA.attr('data-text');
+	// 	if(!url){
+	// 		return;
+	// 	}
+	// 	var isActive = $('.main-layout-tab .layui-tab-title').find("li[lay-id=" + id + "]");
+	// 	if(isActive.length > 0) {
+	// 		//切换到选项卡
+	// 		element.tabChange('tab', id);
+	// 	} else {
+	// 		element.tabAdd('tab', {
+	// 			title: text,
+	// 			content: '<iframe src="' + url + '" name="iframe' + id + '" class="iframe" framborder="0" data-id="' + id + '" scrolling="auto" width="100%"  height="100%"></iframe>',
+	// 			id: id
+	// 		});
+	// 		element.tabChange('tab', id);
 			
-		}
-		mainLayout.removeClass('hide-side');
-	});
+	// 	}
+	// 	mainLayout.removeClass('hide-side');
+	// });
+	// //监听导航点击
+	// element.on('nav()', function(elem) {
+	// 	var navA = $(elem).find('a');
+	// 	var id = navA.attr('data-id');
+	// 	var url = navA.attr('data-url');
+	// 	var text = navA.attr('data-text');
+	// 	if(!url){
+	// 		return;
+	// 	}
+	// 	var isActive = $('.main-layout-tab .layui-tab-title').find("li[lay-id=" + id + "]");
+	// 	if(isActive.length > 0) {
+	// 		//切换到选项卡
+	// 		element.tabChange('tab', id);
+	// 	} else {
+	// 		element.tabAdd('tab', {
+	// 			title: text,
+	// 			content: '<iframe src="' + url + '" name="iframe' + id + '" class="iframe" framborder="0" data-id="' + id + '" scrolling="auto" width="100%"  height="100%"></iframe>',
+	// 			id: id
+	// 		});
+	// 		element.tabChange('tab', id);
+			
+	// 	}
+	// 	mainLayout.removeClass('hide-side');
+	// });
 	//菜单隐藏显示
 	hideBtn.on('click', function() {
 		if(!mainLayout.hasClass('hide-side')) {

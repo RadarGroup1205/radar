@@ -11,11 +11,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
   <script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.js"></script>
-  <link rel="stylesheet" type="text/css" href="../../static/admin/layui/css/layui.css"/>
-  <link rel="stylesheet" type="text/css" href="../../static/admin/css/admin.css"/>
-  <script src="../../static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../../static/admin/js/main.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="layui/layui.js"></script>
+  <script src="../../../static/admin/js/common.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../static/admin/js/table.js" type="text/javascript" charset="utf-8"></script>
   <style>
     .content {
       margin: 50px auto;
@@ -52,7 +51,6 @@
   </style>
 </head>
 <body>
-  
   <section class="content">
     <div class="btn-group operation">
       <button id="btn_add" type="button" class="btn bg-primary">
@@ -69,7 +67,6 @@
         </span>查看详情
       </button>
     </div>
-
 
     <div class="modal fade" id="addBook" role="dialog">
       <div class="modal-dialog">
@@ -292,24 +289,24 @@
   </section>
 </body>
 <script>
-$(function () {
-    var table = $('#subtasktable').DataTable({
-      "ajax": {url :"http://127.0.0.1:8081/getsubinfo"},
+// $(function () {
+//     var table = $('#subtasktable').DataTable({
+//       "ajax": {url :"http://127.0.0.1:8081/getsubinfo"},
 
-      "columns": [
-          { "data": "subtaskId" },
-          { "data": "subtaskNo" },
-          { "data": "taskNo" },
-          { "data": "partNo" },
-          { "data": "partName" },
-          { "data": "serviceman" },
-          { "data": "servicemanNo" },
-          { "data": "subtaskStatus" },
-        ],
+//       "columns": [
+//           { "data": "subtaskId" },
+//           { "data": "subtaskNo" },
+//           { "data": "taskNo" },
+//           { "data": "partNo" },
+//           { "data": "partName" },
+//           { "data": "serviceman" },
+//           { "data": "servicemanNo" },
+//           { "data": "subtaskStatus" },
+//         ],
 
 
-  });
-})
+//   });
+// })
 
 
   let serveUrl = 'http://202.114.41.165:8080/radar_db'
@@ -317,8 +314,7 @@ $(function () {
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间','任务维修周期','负责部门','负责人','任务状态']
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      //"ajax": {url :serveUrl + "RadarSelect",
-      "ajax":{url :"http://127.0.0.1:8081/address"
+      "ajax": {url :serveUrl + "/RadarSelect",
     }, 
   
       "columns": [
@@ -475,6 +471,8 @@ $(function () {
     });
 
     $('#delete').click(function () {
+      
+
       console.log(table.rows('.selected').data()[0].radarmaintenanceId)
       $.ajax({
         type:"post",
@@ -491,33 +489,37 @@ $(function () {
 
     });
 
-
+    
+    
     $('#btn_detail').click(function () {
-      //alert(table.rows('.selected').data()[0]);
-      console.log(table.rows('.selected').data()[0].radarNo);
-      console.log('subtask_detail');
-      $.ajax({
-        type:"post",
-            url:"http://127.0.0.1:8081/getsubinfo",
-            async:true,
-            data:{
-                radarNo: table.rows('.selected').data()[0].radarNo
-      }
-      }
-      )
-  
-      //$("#subtaskDetail").modal()
-      $.tabAdd('tab', {
-            title: 'text',
-            content: '<iframe src="' + 'taskTable.html' + '" name="iframe' + 'id' + '" class="iframe" framborder="0" data-id="' + 'id' + '" scrolling="auto" width="100%"  height="100%"></iframe>',
-            id: 'id'
-        });
 
-
-
-
-
+      layui.use(['element','jquery'], function () {
+      //alert(1111111111)
+      let element=parent.layui.element();
+      //获取父级页面中是否有相同的lay-id的值，确保打开的tab没有重复
+   		element.tabAdd('tab', {
+        title: "详细信息",
+        content: '<iframe id="iframeMain" style="width: 100%" ; height="100%" ; scrolling="no" frameborder="no" src="table/subtaskTable.html"></iframe>',
+			  id: "A"
+      });
+      element.tabChange('tab',"A")
+      })
+      
+      // alert(table.rows('.selected').data()[0]);
+      // console.log(table.rows('.selected').data()[0].radarNo);
+      // console.log('subtask_detail');
+      // $.ajax({
+      //   type:"post",
+      //       url:"http://127.0.0.1:8081/getsubinfo",
+      //       async:true,
+      //       data:{
+      //           radarNo: table.rows('.selected').data()[0].radarNo
+      // }
+      // }
+      // )
     });
+
+
   })
 
   function addUser() {
