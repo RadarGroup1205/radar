@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>装备修理信息化控制平台</title>
+    <link href="css/layui.css" rel="stylesheet" />
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">装备修理信息化控制平台</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="">控制台</a></li>
+                <li class="layui-nav-item"><a href="">管理</a></li>
+                <li class="layui-nav-item"><a href="">用户</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">其它系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">邮件管理</a></dd>
+                        <dd><a href="">消息管理</a></dd>
+                        <dd><a href="">授权管理</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                        @Model.Name
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>              
+                <li class="layui-nav-item"><a href="~/Student2/LogOut">退出</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">维修任务管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a class="site-active" tab-name="主任务维修表" tab-url="main.html" tab-layid="1">主任务维修表</a></dd>
+                            <dd><a class="site-active" tab-name="子任务维修表" tab-url="sub.html" tab-layid="2">子任务维修表</a></dd>
+                            <dd><a class="site-active" tab-name="零部件维修表" tab-url="part.html" tab-layid="3">零部件维修表</a></dd>
+                            <dd><a class="site-active" tab-name="blank" tab-url="test.html" tab-layid="4">blank</a></dd>
+                            <dd><a class="site-active" tab-name="blank" tab-url="/Student2/Student2Tab" tab-layid="5">blank</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">装备信息管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a class="site-active" tab-name="主任务维修表" tab-url="radarinfo.html" tab-layid="6">雷达信息</a></dd>
+                            <dd><a class="site-active" tab-name="主任务维修表" tab-url="partinfo.html" tab-layid="7">零部件信息</a></dd>
+                            <dd><a class="site-active" tab-name="主任务维修表" tab-url="" tab-layid="8">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="">用户权限管理</a></li>
+                    <li class="layui-nav-item"><a href="">系统设置</a></li>
+                </ul>
+            </div>
+        </div>
+ 
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div layui-body style="padding: 15px;">
+                <div class="layui-tab" lay-allowClose="true"  lay-filter="tabList">
+                    <ul class="layui-tab-title">
+                         
+                    </ul>
+                    <div class="layui-tab-content">
+
+                    </div>
+                </div>
+            </div>
+ 
+        </div>
+ 
+ 
+ 
+ 
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © 装备修理信息化控制平台 - 底部固定区域
+        </div>
+    </div>
+    <script src="js/layui.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use(['element','jquery'], function () {
+            var element = layui.element,
+             $ = layui.jquery;
+ 
+            //触发事件
+            var active = {
+                tabAdd:function (name,url,layid) {
+                    element.tabAdd('tabList', {
+                     title: name //'选项卡的标题'
+                    ,content: '<iframe id="iframeMain" style="width: 100%" ; height="100%" ; scrolling="no" frameborder="no" src="'+url+'"></iframe>'//'选项卡的内容' //支持传入html
+                    ,id: layid//'选项卡标题的lay-id属性值'
+                    });
+                },
+                tabChange:function (layid) {
+                    element.tabChange('tabList', layid);
+                },
+                tabDelete:function (layid) {
+                    element.tabDelete('tabList', layid);
+                }
+            }
+ 
+              //当点击有siteactive属性的标签时，即左侧菜单栏中内容 ，触发点击事件
+            $('.site-active' ,'').on("click", function () { 
+                var dataid = $(this);
+                var name = dataid.attr("tab-name");
+                var url = dataid.attr("tab-url");
+                var tab_layid = dataid.attr("tab-layid");
+             
+               
+                //1、 判断tab-layid=layid的tab页是否打开
+                if ($(".layui-tab-title li[lay-id]").length <= 0) { //1.1 初始状态：1个Tab页也没有打开
+                    //alert(11111111111111)
+                    active.tabAdd(name, url, tab_layid); //打开tab页
+                    active.tabChange(tab_layid)//转到该tab页
+                } else { //1.2   判断该Tab页是否已打开
+                    var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
+                    $.each($(".layui-tab-title li[lay-id]"), function () {
+                       
+                        //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+                        if ($(this).attr("lay-id") == tab_layid) {
+                            isData = true;
+                             
+                        }
+                    })
+                    if (isData == false) {
+                        //标志为false 新增一个tab项
+                        active.tabAdd(name, url, tab_layid); //1.2.1  该Tab页未打开，则打开该tab页
+                    }
+ 
+                    active.tabChange(tab_layid)//1.2.2 转到该tab页
+                }
+ 
+          
+                 FrameWH();  //计算ifram层的大小
+ 
+            });
+ 
+ 
+ 
+             function FrameWH() { //计算ifram层的大小
+                var h = $(window).height() - 41 - 10 - 60 - 10 - 44 - 10;
+                $("iframe").css("height", h + "px");
+            }
+ 
+            $(window).resize(function () {
+                FrameWH();
+            })
+ 
+        });
+    </script>
+</body>
+</html>                                              
