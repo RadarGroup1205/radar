@@ -66,18 +66,7 @@
         <span class="glyphicon glyphicon-detail" aria-hidden="true">
         </span>查看详情
       </button>
-      <button id="btntest" type="button" class="btn btn-success">
-        <span class="glyphicon glyphicon-detail" aria-hidden="true">
-        </span>跳转测试
-      </button>
     </div>
-  </div>
-    <div class="layui-layout layui-layout-admin">
-      <div class="layui-tab">
-        <button><a class="site-active" tab-name="学生列表B" tab-url="sub.html" tab-layid="22">学生列表B</a></button>
-      </div>
-    </div>
-
 
     <div class="modal fade" id="addBook" role="dialog">
       <div class="modal-dialog">
@@ -513,11 +502,11 @@
 
     layui.use(['element','jquery'], function () {
         let element=parent.layui.element;
-        //获取父级页面中是否有相同的lay-id的值，确保打开的tab没有重复
+        //获取父级页面
         element.tabAdd('tabList',{
-            title:"模块管理",
-            content:'<iframe id="iframeMain" style="width: 100%" ; height="100%" ; scrolling="no" frameborder="no" src="part.html"></iframe>',
-            id:"A" //lay-id的值，可以用来判断是否已经打开
+            title:"零部件维修表",
+            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000%" ; scrolling="no" frameborder="no" src="part.html"></iframe>',
+            id:"A" //lay-id的值
         })
         element.tabChange('tabList',"A")
 
