@@ -36,7 +36,7 @@ function getUser() {
 				sessionStorage.username = username;                     //将username存储到本地sessionStorage中
 				sessionStorage.loginState = 1;                          //用户登录状态变为已登录
 				console.log('管理员登录');
-				window.location.href = 'Admin.html';
+				window.location.href = 'index.html';
 			}
 			else if (data == '1') {
 				sessionStorage.loginState = 1 

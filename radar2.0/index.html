@@ -90,8 +90,11 @@
             © 装备修理信息化控制平台 - 底部固定区域
         </div>
     </div>
-    <script src="js/layui.js"></script>
+    <script type="text/javascript" src="js/layui.js"></script>
+    <script type="text/javascript" src="js/checklogin.js"></script>
     <script>
+        // 非法登录拦截
+        const no = checkLog()
         //JavaScript代码区域
         layui.use(['element','jquery'], function () {
             var element = layui.element,
