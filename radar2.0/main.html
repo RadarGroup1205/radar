@@ -11,8 +11,7 @@
   <script src="js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
   <script src="js/jquery.dataTables.js"></script>
-  <link href="css/layui.css" rel="stylesheet" />
-  <script src="js/layui.js"></script>
+  <script src="layui/layui.js"></script>
   <style>
     .content {
       margin: 50px auto;
@@ -573,34 +572,25 @@
       $("#deleteTaskModal").find('input').val('')
     });
 
-  })
-
+    
   $('#btn_detail').click(function () {
-      //alert(table.rows('.selected').data()[0]);
-      console.log(table.rows('.selected').data()[0].radarNo);
-      // console.log('subtask_detail');
-      // $.ajax({
-      //   type:"post",
-      //       url:"http://127.0.0.1:8081/getsubinfo",
-      //       async:true,
-      //       data:{
-      //           radarNo: table.rows('.selected').data()[0].radarNo
-      // }
-      // })
-
-    layui.use(['element','jquery'], function () {
-        let element=parent.layui.element;
-        //获取父级页面
-        element.tabAdd('tabList',{
-            title:"子任务维修表",
-            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000%" ; scrolling="no" frameborder="no" src="sub.html"></iframe>',
-            id:"A" //lay-id的值
-        })
-        element.tabChange('tabList',"A")
+      console.log(table.rows('.selected').data()[0].taskNo);
+      var taskno = table.rows('.selected').data()[0].taskNo
+      layui.use(['element','jquery'], function () {
+          let element=parent.layui.element;
+          //获取父级页面
+          element.tabAdd('tabList',{
+              title:taskno+ "子任务详情",
+              content:'<iframe id="iframeMain" style="width:100% ; height:100%"  scrolling="no" frameborder="no" src="sub.html?'+taskno+'"></iframe>',
+              id: taskno //lay-id的值
+          })
+          element.tabChange('tabList',taskno)
 
 })
 
     });
+
+  })
 
   function addUser() {
     $.ajax({
