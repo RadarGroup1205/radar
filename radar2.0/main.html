@@ -583,15 +583,13 @@
           //获取父级页面
           element.tabAdd('tabList',{
               title:taskno+ "子任务详情",
-              content:'<iframe id="iframeMain" style="width:100% ; height:100%"  scrolling="no" frameborder="no" src="sub.html?'+taskno+'"></iframe>',
+              content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html?'+taskno+'"></iframe>',
               id: taskno //lay-id的值
           })
           element.tabChange('tabList',taskno)
 
-})
-
-    });
-
+           })
+       });
   })
 
   function addUser() {

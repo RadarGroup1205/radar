@@ -496,15 +496,17 @@
     
     
     $('#btn_detail').click(function () {
+    console.log(table.rows('.selected').data()[0].subtaskNo);
+    var subtaskno = table.rows('.selected').data()[0].subtaskNo
     layui.use(['element','jquery'], function () {
         let element=parent.layui.element;
         //获取父级页面
         element.tabAdd('tabList',{
-            title:"零部件维修表",
-            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000%" ; scrolling="no" frameborder="no" src="part.html"></iframe>',
-            id:"A" //lay-id的值
+            title:subtaskno + "零部件维修任务详情",
+            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000px" ; scrolling="no" frameborder="no" src="part.html?'+subtaskno+'"></iframe>',
+            id:subtaskno //lay-id的值
         })
-        element.tabChange('tabList',"A")
+        element.tabChange('tabList',subtaskno)
 
 })
 
