@@ -201,10 +201,8 @@
       <thead>
         <tr>
           <th>Id</th>
-          <th>零部件编号</th>
           <th>零部件名称</th>
           <th>所属设备名称</th>
-          <th>生产厂家</th>
           <th>所属设备编号</th>
           <th>零件状态</th>
         </tr>
@@ -221,13 +219,11 @@
     var table = $('#任务基本属性').DataTable({
       "ajax": serveUrl + "/PartSelect",  
       "columns": [
-                { "data": "radarinfoId" },
-                { "data": "radarNo" },
+                { "data": "partinfoId" },
+                { "data": "partName" },
                 { "data": "radarName" },
-                { "data": "productionDate" },
-                { "data": "manufacture" },
-                { "data": "radarDeployment" },
-                { "data": "serviceStatus" },
+                { "data": "radarNo" },
+                { "data": "partStatus" },
                 ],
 
       "pagingType": "full_numbers",
