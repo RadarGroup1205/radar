@@ -289,42 +289,50 @@
   </section>
 </body>
 <script>
-// $(function () {
-//     var table = $('#subtasktable').DataTable({
-//       "ajax": {url :"http://127.0.0.1:8081/getsubinfo"},
 
-//       "columns": [
-//           { "data": "subtaskId" },
-//           { "data": "subtaskNo" },
-//           { "data": "taskNo" },
-//           { "data": "partNo" },
-//           { "data": "partName" },
-//           { "data": "serviceman" },
-//           { "data": "servicemanNo" },
-//           { "data": "subtaskStatus" },
-//         ],
-
-
-//   });
-// })
   let serveUrl = 'http://202.114.41.165:8080/radar_db'
-  var data = ['49288-0957']
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间','任务维修周期','负责部门','负责人','任务状态']
+
+  var str = location.search
+  if (str.indexOf("?") != -1) {
+                        var str = str.substr(1);
+                    }
+  console.log(str)
+
+  function subtaskdata(value) {
+    $.ajax({
+        url:"http://127.0.0.1:8081/radar",
+        type:"post",
+        data:{id:str},
+        dataType:"json",
+        async:false, // 同步请求
+        success:function(result){
+            if(result != null && result != "" && result != undefined){
+                var data_ = result.data;
+                value=data_;
+            }
+        }
+    })
+    return value;
+  }
+  data = subtaskdata();
+  console.log(data)
+
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      "ajax": {url :serveUrl + "/RadarSelect",
-    }, 
+      //"ajax": {url :serveUrl + "/RadarSelect",
+      "data": data,
   
       "columns": [
-                { "data": "radarmaintenanceId" },
-                { "data": "radarNo" },
-                { "data": "radarName" },
+                { "data": "subtaskNo" },
                 { "data": "taskNo" },
-                { "data": "faultReason" },
-                { "data": "solution" },
-                { "data": "serviceman" },
-                { "data": "servicemanNo" },
-                { "data": "schedule" },],
+                { "data": "partNo" },
+                { "data": "taskNo" },
+                { "data": "partName" },
+                { "data": "repairman" },
+                { "data": "repairmanNo" },
+                { "data": "subtaskStatus" },
+                { "data": "partCost" },],
 
       "pagingType": "full_numbers",
       "bSort": true,
@@ -488,18 +496,6 @@
     
     
     $('#btn_detail').click(function () {
-      //alert(table.rows('.selected').data()[0]);
-      // console.log(table.rows('.selected').data()[0].radarNo);
-      // console.log('subtask_detail');
-      // $.ajax({
-      //   type:"post",
-      //       url:"http://127.0.0.1:8081/getsubinfo",
-      //       async:true,
-      //       data:{
-      //           radarNo: table.rows('.selected').data()[0].radarNo
-      // }
-      // })
-
     layui.use(['element','jquery'], function () {
         let element=parent.layui.element;
         //获取父级页面
