@@ -330,6 +330,7 @@
   </section>
 </body>
 <script>
+  let serveUrl = 'http://202.114.41.165:8080/radar_db'
   var str = location.search
   if (str.indexOf("?") != -1) {
                         var str = str.substr(1);
@@ -338,7 +339,7 @@
 
   function subtaskdata(value) {
     $.ajax({
-        url:"",
+        url:serveUrl + "",
         type:"post",
         data:{id:str},
         dataType:"json",
@@ -354,12 +355,10 @@
   }
   data = subtaskdata();
   console.log(data)
-
-  let serveUrl = 'http://202.114.41.165:8080/radar_db'
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间', '任务维修周期', '负责部门', '负责人', '任务状态']
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      "ajax": serveUrl + "/subselect",
+      "data":data,
 
       "columns": [
         { "data": "subtaskId" },
@@ -492,9 +491,12 @@
       if (table.rows('.selected').data().length) {
         $("#editBookInfo").modal()
         var rowData = table.rows('.selected').data()[0];
+        //console.log(rowData)
         var inputs = $("#editBookModal").find('input')
-        for (var i = 0; i < inputs.length; i++) {
-          $(inputs[i]).val(rowData[i + 1])
+        var count1=0
+        for (var key in rowData){
+          $(inputs[count1]).val(rowData[key])
+          count1++
         }
       } else {
         alert('请选择项目');

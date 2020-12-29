@@ -202,13 +202,13 @@
                     <label for="taskNo" class="control-label">任务编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="taskNo" type="text">
+                    <input class="form-control" id="etaskNo" type="text">
                   </td>
                   <td>
                     <label for="taskName" class="control-label">任务名称:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="taskName" type="text">
+                    <input class="form-control" id="etaskName" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -216,13 +216,13 @@
                     <label for="radarNo" class="control-label">维修设备编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="radarNo" type="text">
+                    <input class="form-control" id="eradarNo" type="text">
                   </td>
                   <td>
                     <label for="radarName" class="control-label">维修设备名称:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="radarName" type="text">
+                    <input class="form-control" id="eradarName" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -230,13 +230,13 @@
                     <label for="pStartTime" class="control-label">计划开始时间:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pStartTime" type="date" onchange="setEndTime()">
+                    <input class="form-control" id="epStartTime" type="date" onchange="setEndTime()">
                   </td>
                   <td>
                     <label for="pEndTime" class="control-label">计划结束时间:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pEndTime" type="date" onchange="getDays()">
+                    <input class="form-control" id="epEndTime" type="date" onchange="getDays()">
                   </td>
                 </tr>
                 <tr>
@@ -244,13 +244,13 @@
                     <label for="pTimes" class="control-label">任务维修周期:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pTimes" type="text">
+                    <input class="form-control" id="epTimes" type="text">
                   </td>
                   <td>
                     <label for="department" class="control-label">负责部门:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="department" type="text">
+                    <input class="form-control" id="edepartment" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -258,13 +258,13 @@
                     <label for="supervisor" class="control-label">负责人:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="supervisor" type="text">
+                    <input class="form-control" id="esupervisor" type="text">
                   </td>
                   <td>
                     <label for="supervisorNo" class="control-label">负责人工号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="supervisorNo" type="text">
+                    <input class="form-control" id="esupervisorNo" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -272,14 +272,14 @@
                     <label for="cost" class="control-label">维修成本:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="cost" type="text">
+                    <input class="form-control" id="ecost" type="text">
                   </td>
                   <td>
                     <label for="schedule" class="control-label">维修进度:*</label>
                   </td>
                   <td>
                     <div class="col-sm">
-                      <input class="form-control" list="browsers" id="schedule" type="text">
+                      <input class="form-control" list="browsers" id="eschedule" type="text">
                       <datalist id="browsers">
                         <option value="待维修">
                         <option value="未维修">
@@ -442,7 +442,7 @@
       console.log('addTasksInfo');
       //获得添加弹窗的输入信息
       $.ajax({
-        url: serveUrl + "/select",                                          //后台提供的服务器（接口） config.baseServerUrl + '/account/login', 
+        url: serveUrl + "/add",                                          //后台提供的服务器（接口） config.baseServerUrl + '/account/login', 
         type: 'post',                                               //请求方式是post
         data: {
           taskNo: document.getElementById("taskNo").value,
@@ -479,14 +479,14 @@
           // var 维修结束时间 = $("#rEndTime").val()
           // var 维修工期 = $("#rTimes").val()
 
-          var addInfos = [].concat(任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人, 维修成本, 任务状态, 维修结束时间, 维修工期);
+          var addInfos = [].concat(任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人,负责人工号,维修成本, 任务状态);
           alert(addInfos);
           for (var i = 0; i < addInfos.length; i++) {
-            if (addTaskInfos[i] === '') {
+            if (addInfos[i] === '') {
               alert(titles[i] + '内容不能为空')
             }
           }
-          table.row.add([任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人, 维修成本, 任务状态, 维修结束时间, 维修工期]).draw();
+          table.row.add([任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人,负责人工号,维修成本, 任务状态]).draw();
           $("#addTaskModal").find('input').val(任务编号)
         }
       } else {
