@@ -8,6 +8,7 @@
 	<link href="layui/css/layui.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/checklogin.js"></script>
+	<link rel="stylesheet" href="css/main.css">
 	<script>
 		// 非法登录拦截
 		const no = checkLog();
@@ -136,10 +137,14 @@
 			<div layui-body style="padding: 15px;">
 				<div class="layui-tab layui-tab-brief" lay-allowClose="true" lay-filter="tabList">
 					<ul class="layui-tab-title">
-
+						<li class="layui-this welcome">
+							主页
+						</li>
 					</ul>
 					<div class="layui-tab-content">
-
+						<div class="layui-tab-item layui-show">
+							<iframe src="welcome.html" frameborder="0"></iframe>
+						</div>
 					</div>
 				</div>
 			</div>
