@@ -10,48 +10,55 @@ function keyLogin() {
 // 登录按钮事件响应
 function getUser() {
 
-	// 获取用户信息
-	var username = document.getElementById('username').value;
-	var password = document.getElementById('password').value;
+	try {
+		// 获取登录用户信息
+		var username = document.getElementById('username').value;
+		var password = document.getElementById('password').value;
 
-	// ajax提交前表单校验，判断两个均不为空
-	if (username == '' || password == '') {
-		alert('用户名和密码不能为空！');
-		return false;
+		// ajax提交前表单校验，判断两个均不为空
+		if (username == '' || password == '') {
+			alert('用户名和密码不能为空！');
+			return false;
+		}
+
+		// Ajax提交表单数据
+		$.ajax({
+			url: serverUrl + '/load',                                   //后台提供的服务器（接口） config.baseServerUrl + '/account/login',          
+			type: 'post',
+			data: {
+				name: username,
+				// pwd: password
+				pwd: md5(password)
+			},
+			success: function (data) {                                  //data，接口返回来的用户权限等级
+				// console.log(data);
+
+				if (data == '0') {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
+					sessionStorage.setItem('loginState','1');
+					sessionStorage.setItem('userName',username);
+					sessionStorage.setItem('userType',data);
+					// console.log('登录成功');
+					// console.log(sessionStorage.getItem('userName'));
+					window.location.href = 'index.html';
+				}
+				else {
+					alert('请输入正确的用户名和密码！');
+					window.location.reload();
+				}
+			},
+			error: function(msg) {
+				alert('登录失败\n网络连接错误' + JSON.stringify(msg));
+			}
+			// error: function (XMLHttpRequest, textStatus, errorThrown) {
+			// 	alert(XMLHttpRequest.status);                             //状态
+			// 	alert(XMLHttpRequest.readyState);                         //状态码
+			// 	alert(textStatus);                                      	//错误信息
+			// }
+		});
+
+	} catch (error) {
+		window.location.reload();
+		alert(error.name + error.message);
 	}
 
-	// Ajax提交表单数据
-	$.ajax({
-		url: serverUrl + '/load',                                   //后台提供的服务器（接口） config.baseServerUrl + '/account/login',          
-		type: 'post',
-		data: {
-			name: username,
-			// pwd: password
-			pwd: md5(password) 
-		},
-		success: function (data) {                                  //接口返回来的data值，注意这个data是后台返回的值，上面的data是要传给后台的值  
-			console.log(data);
-
-			if (data == '0') {                                        //根据后台返回的data.code来判断打开什么页面    
-				sessionStorage.username = username;                     //将username存储到本地sessionStorage中
-				sessionStorage.loginState = 1;                          //用户登录状态变为已登录
-				console.log('管理员登录');
-				window.location.href = 'index.html';
-			}
-			else if (data == '1') {
-				sessionStorage.loginState = 1 
-				console.log('普通用户登录');
-				window.location.href = 'User.html';
-			}
-			else {
-				alert('请输入正确的用户名和密码！');
-				window.location.reload();
-			}
-		},
-		error: function (XMLHttpRequest, textStatus, errorThrown) {
-			alert(XMLHttpRequest.status);                             //状态
-			alert(XMLHttpRequest.readyState);                         //状态码
-			alert(textStatus);                                      	//错误信息
-		}
-	})
 }
