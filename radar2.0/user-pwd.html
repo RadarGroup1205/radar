@@ -8,6 +8,22 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<title>个人信息</title>
 	<link rel="stylesheet" type="text/css" href="css/layui.css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script>
+		// 初始化加载
+		$(function () {
+
+			try {
+				var strName = sessionStorage.getItem('userName');
+				$("#upName").val(strName);
+			}
+			catch (ex) {
+				alert(ex.message);
+			}
+
+		});
+	</script>
+</head>
 </head>
 
 <body>
@@ -16,9 +32,9 @@
 			<div class="layui-tab-item layui-show">
 				<form class="layui-form" style="width: 90%;padding-top: 20px;">
 					<div class="layui-form-item">
-						<label class="layui-form-label">用户名：</label>
+						<label class="layui-form-label">登录名：</label>
 						<div class="layui-input-block">
-							<input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled"
+							<input type="text" id="upName" disabled autocomplete="off" class="layui-input layui-disabled"
 								value="admin">
 						</div>
 					</div>
