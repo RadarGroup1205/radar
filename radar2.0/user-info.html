@@ -8,6 +8,40 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<title>个人信息</title>
 	<link rel="stylesheet" type="text/css" href="css/layui.css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script>
+		// 初始化加载
+		$(function () {
+
+			try {
+				var strName = sessionStorage.getItem('userName');
+				var numType = Number(sessionStorage.getItem('userType'));
+				var strType = '用户';
+				switch (numType) {
+					case 0:
+						strType = '超级管理员';
+						break;
+					case 1:
+						strType = '主任务管理员';
+						break;
+					case 2:
+						strType = '子任务管理员';
+						break;
+					case 3:
+						strType = '维修人员';
+						break;
+					default:
+						alert('没有此用户类型' + numType);
+				}
+				$("#uiName").val(strName);
+				$("#uiType").val(strType);
+			}
+			catch (ex) {
+				alert(ex.message);
+			}
+
+		});
+	</script>
 </head>
 
 <body>
@@ -16,23 +50,23 @@
 			<div class="layui-tab-item layui-show">
 				<form class="layui-form" style="width: 90%;padding-top: 20px;">
 					<div class="layui-form-item">
-						<label class="layui-form-label">ID：</label>
+						<label class="layui-form-label">登录名：</label>
 						<div class="layui-input-block">
-							<input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled" value="1">
+							<input type="text" id="uiName" disabled autocomplete="off" class="layui-input layui-disabled" value="Hi">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">用户名：</label>
+						<label class="layui-form-label">用户类型：</label>
 						<div class="layui-input-block">
-							<input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled"
-								value="admin">
+							<input type="text" id="uiType" disabled autocomplete="off" class="layui-input layui-disabled"
+								value="1">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">姓名：</label>
+						<label class="layui-form-label">手机：</label>
 						<div class="layui-input-block">
 							<input type="text" name="name" required autocomplete="off" class="layui-input" lay-verify="required"
-								placeholder="请输入标题" value="未知">
+								placeholder="需要修改请输入新手机号">
 						</div>
 					</div>
 					<div class="layui-form-item layui-form-text">

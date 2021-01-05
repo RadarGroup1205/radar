@@ -31,7 +31,7 @@ function getUser() {
 				pwd: md5(password)
 			},
 			success: function (data) {                                  //data，接口返回来的用户权限等级
-				// console.log(data);
+				console.log(data);
 
 				if (data == '0') {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
 					sessionStorage.setItem('loginState','1');
