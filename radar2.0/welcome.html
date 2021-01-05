@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title>主页</title>
+        <link rel="stylesheet" href="layui/css/layui.css">
+        <link rel="stylesheet" href="js/echarts/echarts.js">
+        
+        <link rel="stylesheet" href="css/main.css">
+
+    </head>
+    <body>
+        <div class="layui-card">
+            <div class="layui-card-header"></div>
+             <div class="layui-card-body">
+                <div id="EchartZhu" style="width: 500px;height:500px;"></div>
+             </div>
+        </div>
+
+        <!-- <script>
+        layui.config({
+                base:'/js/'
+            }).extend({echarts:'echarts/echarts'}).use(['element', 'echarts'], function() {
+            var element = layui.element,
+                $=layui.jquery,
+                echarts = layui.echarts;
+            var chartZhu = echarts.init(document.getElementById('EchartZhu'))
+            //指定图表配置项和数据
+            var optionchart = {
+                    title: {
+                        text: '商品订单'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['销量']
+                    },
+                    xAxis: {
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '销量',
+                        type: 'bar', //柱状
+                        data: [100,200,300,400,500,600,700],
+                        itemStyle: {
+                            normal: { //柱子颜色
+                                color: 'red'
+                            }
+                        },
+                    },{
+                        name:'产量',
+                        type:'bar',
+                        data:[120,210,340,430,550,680,720],
+                        itemStyle:{
+                            normal:{
+                                color:'blue'
+                            }
+                        }
+                    }]
+                };
+
+                
+                chartZhu.setOption(optionchart,true);
+
+        });
+           
+        </script> -->
+
+        <script src="js/echarts/echarts.js"></script>
+        <script>
+            var myChart = echarts.init(document.getElementById('EchartZhu'));
+            var option = { 
+                title: {
+                    text: '月维修进度'
+                },
+            tooltip:{},
+            legend: {
+                data:['百分比']
+            },
+            xAxis: {
+                data: ["任务一","任务二","任务三","任务四","任务五","任务六"]
+            },
+            yAxis: {},
+            series: [{
+                name: '百分比',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };     
+        myChart.setOption(option);
+
+        </script>
+    </body>
+</html>
