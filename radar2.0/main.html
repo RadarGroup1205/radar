@@ -272,7 +272,7 @@
                     <label for="cost" class="control-label">维修成本:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="ecost" type="text">
+                    <input class="form-control" id="cost" type="text">
                   </td>
                   <td>
                     <label for="schedule" class="control-label">维修进度:*</label>
@@ -329,10 +329,11 @@
           <th>负责部门</th>
           <th>负责人</th>
           <th>负责人工号</th>
-          <th>维修成本</th>
-          <th>任务状态</th>
+          <th>维修开始时间</th>
           <th>维修结束时间</th>
           <th>维修工期</th>
+          <th>维修成本</th>
+          <th>任务状态</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -341,29 +342,40 @@
 </body>
 
 <script>
-  // 显示数据库数据
+  
   let serveUrl = 'http://202.114.41.165:8080/radar_db'
   var data = ['49288-0957']
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '计划开始时间', '计划结束时间', '计划维修周期', '负责部门', '负责人', '负责人工号', '任务状态', '维修结束时间', '维修工期']
   $(function () {
+    var columnsDef = [
+  {
+      "title": "查看详情",
+      "render": function (data, type, row, meta) {
+          return '<a href="https://www.baidu.com/?' + data + '">' + data + '</a>';
+      }
+  },
+  ];
     var table = $('#任务基本属性').DataTable({
       "ajax": serveUrl + "/select",
 
       "columns": [
-      { "data": "taskNo" },
+        { "data": "taskNo" },
         { "data": "taskName" },
-        { "data": "radarNo" },
-        { "data": "radarName" },
+        { "data": "equipmentNo" },
+        { "data": "equipmentName" },
         { "data": "startTime" },
         { "data": "endTime" },
         { "data": "taskCycle" },
         { "data": "department" },
         { "data": "supervisor" },
         { "data": "supervisorNo" },
-        { "data": "taskStatus" },
+
         { "data": "repairStarttime" },
         { "data": "repairFinishtime" },
         { "data": "repairCycle" },
+
+        { "data": "cost" },
+        { "data": "taskStatus" },
       ],
 
       "pagingType": "full_numbers",
@@ -508,12 +520,22 @@
       if (table.rows('.selected').data().length) {
         $("#editTaskInfo").modal()
         var rowData = table.rows('.selected').data()[0];
+        console.log(rowData)
         var inputs = $("#editTaskModal").find('input')
-        var count = 0
-        for (var key in rowData) {
-          $(inputs[count]).val(rowData[key])
-          count++
-        }
+        //console.log(inputs[0])
+        $(inputs[0]).val(rowData.taskNo)
+        $(inputs[1]).val(rowData.taskName)
+        $(inputs[2]).val(rowData.equipmentNo)
+        $(inputs[3]).val(rowData.equipmentName)
+        $(inputs[4]).val(rowData.startTime)
+        $(inputs[5]).val(rowData.endTime)
+        $(inputs[6]).val(rowData.taskCycle)
+        $(inputs[7]).val(rowData.department)
+        $(inputs[8]).val(rowData.supervisor)
+        $(inputs[9]).val(rowData.supervisorNo)
+        $(inputs[10]).val(rowData.cost)
+        $(inputs[11]).val(rowData.taskStatus)
+
       } else {
         alert('请选择项目');
       }

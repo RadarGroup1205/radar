@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>子任务界面</title>
+  <title>零部件任务界面</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-  <script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.js"></script>
+  <script src="js/jquery.js"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+  <script src="js/jquery.dataTables.js"></script>
   <style>
     .content {
       margin: 50px auto;
@@ -198,13 +198,13 @@
                     <label for="taskNo" class="control-label">主任务编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="taskNo" type="text">
+                    <input class="form-control" id="etaskNo" type="text">
                   </td>
                   <td>
                     <label for="taskName" class="control-label">子任务编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="taskName" type="text">
+                    <input class="form-control" id="etaskName" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -212,13 +212,13 @@
                     <label for="unitNo" class="control-label">维修部件编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="unitNo" type="text">
+                    <input class="form-control" id="eunitNo" type="text">
                   </td>
                   <td>
                     <label for="unitName" class="control-label">维修部件名称:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="unitName" type="text">
+                    <input class="form-control" id="eunitName" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -226,13 +226,13 @@
                     <label for="pSstartTime" class="control-label">计划开始时间:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pStartTime" type="date" onchange="setEndTime()">
+                    <input class="form-control" id="epStartTime" type="date" onchange="setEndTime()">
                   </td>
                   <td>
                     <label for="pEndTime" class="control-label">计划结束时间:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pEndTime" type="date" onchange="getDays()">
+                    <input class="form-control" id="epEndTime" type="date" onchange="getDays()">
                   </td>
                 </tr>
                 <tr>
@@ -240,13 +240,13 @@
                     <label for="pTimes" class="control-label">计划维修周期:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="pTimes" type="text">
+                    <input class="form-control" id="epTimes" type="text">
                   </td>
                   <td>
                     <label for="department" class="control-label">维修部门:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="department" type="text">
+                    <input class="form-control" id="edepartment" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -254,13 +254,13 @@
                     <label for="supervisor" class="control-label">维修负责人:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="supervisor" type="text">
+                    <input class="form-control" id="esupervisor" type="text">
                   </td>
                   <td>
                     <label for="supervisorNo" class="control-label">负责人工号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="supervisorNo" type="text">
+                    <input class="form-control" id="esupervisorNo" type="text">
                   </td>
                 </tr>
                 <tr>
@@ -268,14 +268,14 @@
                     <label for="supervisorNo" class="control-label">维修成本:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="cost" type="text">
+                    <input class="form-control" id="ecost" type="text">
                   </td>
                   <td>
                     <label for="schedule" class="control-label">维修进度:*</label>
                   </td>
                   <td>
                     <div class="col-sm">
-                      <input class="form-control" list="browsers" id="schedule" type="text">
+                      <input class="form-control" list="browsers" id="eschedule" type="text">
                       <datalist id="browsers">
                         <option value="待维修">
                         <option value="未维修">
@@ -337,9 +337,9 @@
                     }
   console.log(str)
 
-  function subtaskdata(value) {
+  function subtaskdata(data ,value) {
     $.ajax({
-        url:serveUrl + "",
+        url:serveUrl + "/RadarSelect",
         type:"post",
         data:{id:str},
         dataType:"json",
@@ -347,26 +347,32 @@
         success:function(result){
             if(result != null && result != "" && result != undefined){
                 var data_ = result.data;
-                value=data_;
+                console.log(data_)
+                for(i in data_){
+                  if(data_[i].subtaskNo == str){
+                    value = data_[i]
+                  }
+                }
             }
         }
     })
     return value;
   }
   data = subtaskdata();
-  console.log(data)
+  data1=[]
+  data1.push(data)
+  console.log(data1)
+  //let dataArr = Object.values(data)  转换为数组
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间', '任务维修周期', '负责部门', '负责人', '任务状态']
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      "data":data,
-
+      "data":data1,
       "columns": [
         { "data": "subtaskId" },
         { "data": "subtaskNo" },
         { "data": "taskNo" },
         { "data": "partNo" },
         { "data": "partName" },
-
         { "data": "serviceman" },
         { "data": "servicemanNo" },
         { "data": "subtaskStatus" },
