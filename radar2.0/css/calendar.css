@@ -1,0 +1,17 @@
+.two-column-layout {
+  display: flex;
+  width: auto;
+  height: auto;
+}
+.left {
+  width: 75%;
+}
+.right {
+  flex: 1;
+}
+.top {
+  height: 75%;
+}
+.bottom {
+  flex: 1;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>计划安排</title>
+  <link rel="stylesheet" href="css/calendar.css">
+  <link rel="stylesheet" href="css/fullcalendar.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/fullcalendar.js"></script>
+  <script src="js/zh-cn.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          headerToolbar: {
+            left: 'prevYear,prev,next,nextYear,today',
+            center: 'title',
+            right: 'dayGridMonth,dayGridWeek,dayGridDay,list'
+          },
+          // locale: initialLocaleCode,
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+  </script>
+</head>
+
+<body>
+  <div class="two-column-layout">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="left">
+      <div id="calendar"></div>
+    </div>
+
+    <div class="right">
+      <div class="right top">
+        <div class="widget-header">
+          <h4>待计划任务</h4>
+        </div>
+
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div id="external-events">
+              <div class="external-event label-grey" data-class="label-grey">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 1
+              </div>
+
+              <div class="external-event label-success" data-class="label-success">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 2
+              </div>
+
+              <div class="external-event label-danger" data-class="label-danger">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 3
+              </div>
+
+              <div class="external-event label-purple" data-class="label-purple">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 4
+              </div>
+
+              <div class="external-event label-yellow" data-class="label-yellow">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 5
+              </div>
+
+              <div class="external-event label-pink" data-class="label-pink">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 6
+              </div>
+
+              <div class="external-event label-info" data-class="label-info">
+                <i class="ace-icon fa fa-arrows"></i>
+                My Event 7
+              </div>
+
+              <label>
+                <input type="checkbox" class="ace ace-checkbox" id="drop-remove" />
+                <span class="lbl"> Remove after drop</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right bottom">
+
+      </div>
+    </div>
+  </div>
+  <!-- PAGE CONTENT ENDS -->
+</body>
+
+</html>
