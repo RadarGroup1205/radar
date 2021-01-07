@@ -11,7 +11,14 @@
 }
 .top {
   height: 75%;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  background: #eee;
 }
 .bottom {
   flex: 1;
+}
+#external-events .fc-event {
+  margin: 3px 0;
+  cursor: move;
 }

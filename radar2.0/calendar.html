@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8">
@@ -11,19 +11,95 @@
   <script src="js/fullcalendar.js"></script>
   <script src="js/zh-cn.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          headerToolbar: {
-            left: 'prevYear,prev,next,nextYear,today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,list'
-          },
-          // locale: initialLocaleCode,
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      /*------------初始化日历------------------------------------*/
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prevYear,prev,next,nextYear,today',
+          center: 'title',
+          right: 'dayGridMonth,dayGridWeek,dayGridDay,listMonth'
+        },
+        locale: 'zh-CN',
+        initialView: 'dayGridMonth',
+        weekNumbers: true,
+        navLinks: true,
+        eventClick: function (arg) {
+          if (confirm('确定要删除这个任务安排吗？')) {
+            arg.event.remove()
+            // 要返回到任务列表里
+          }
+        },
+        editable: true,
+        droppable: true,
+        drop: function (arg) {
+          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+        },
+        events: [
+        {
+          title: '全天任务',
+          start: '2021-01-01'
+        },
+        {
+          title: '长期任务',
+          start: '2021-01-07',
+          end: '2021-01-10'
+        },
+        {
+          groupId: 999,
+          title: '重复工作',
+          start: '2021-01-09T16:00:00'
+        },
+        {
+          groupId: 999,
+          title: '重复工作',
+          start: '2021-01-16T16:00:00'
+        },
+        {
+          title: '谈判',
+          start: '2021-01-11',
+          end: '2021-01-13'
+        },
+        {
+          title: '会议',
+          start: '2021-01-12T10:30:00',
+          end: '2021-01-12T12:30:00'
+        },
+        {
+          title: '午餐',
+          start: '2021-01-12T12:00:00'
+        },
+        {
+          title: '会议',
+          start: '2021-01-12T14:30:00'
+        },
+        {
+          title: '快乐时光',
+          start: '2021-01-12T17:30:00'
+        },
+        {
+          title: '晚餐',
+          start: '2021-01-12T20:00:00'
+        },
+        {
+          title: '生日派对',
+          start: '2021-01-13T19:00:00'
+        }
+      ]
       });
+      /*------------初始化任务------------------------------------*/
+      var containerEl = document.getElementById('external-events-list');
+      new FullCalendar.Draggable(containerEl, {
+        itemSelector: '.fc-event',
+        eventData: function (eventEl) {
+          return {
+            title: eventEl.innerText.trim()
+          }
+        }
+      });
+      calendar.render();
+    });
 
   </script>
 </head>
@@ -36,61 +112,35 @@
     </div>
 
     <div class="right">
-      <div class="right top">
-        <div class="widget-header">
-          <h4>待计划任务</h4>
+      <div class="right top" id="external-events">
+        <div class="events-header">
+          <h4>待安排任务</h4>
         </div>
 
-        <div class="widget-body">
-          <div class="widget-main no-padding">
-            <div id="external-events">
-              <div class="external-event label-grey" data-class="label-grey">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 1
-              </div>
-
-              <div class="external-event label-success" data-class="label-success">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 2
-              </div>
-
-              <div class="external-event label-danger" data-class="label-danger">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 3
-              </div>
-
-              <div class="external-event label-purple" data-class="label-purple">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 4
-              </div>
-
-              <div class="external-event label-yellow" data-class="label-yellow">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 5
-              </div>
-
-              <div class="external-event label-pink" data-class="label-pink">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 6
-              </div>
-
-              <div class="external-event label-info" data-class="label-info">
-                <i class="ace-icon fa fa-arrows"></i>
-                My Event 7
-              </div>
-
-              <label>
-                <input type="checkbox" class="ace ace-checkbox" id="drop-remove" />
-                <span class="lbl"> Remove after drop</span>
-              </label>
-            </div>
+        <div id='external-events-list'>
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+            <div class='fc-event-main'>任务 1</div>
+          </div>
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+            <div class='fc-event-main'>任务 2</div>
+          </div>
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+            <div class='fc-event-main'>任务 3</div>
+          </div>
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+            <div class='fc-event-main'>任务 4</div>
+          </div>
+          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+            <div class='fc-event-main'>任务 5</div>
           </div>
         </div>
       </div>
-      <div class="right bottom">
-
-      </div>
     </div>
+  </div>
+  <div class="right bottom">
+
+  </div>
+  </div>
   </div>
   <!-- PAGE CONTENT ENDS -->
 </body>
