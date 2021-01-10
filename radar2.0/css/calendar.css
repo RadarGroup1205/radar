@@ -5,20 +5,45 @@
 }
 .left {
   width: 75%;
+  margin-right: 20px;
 }
 .right {
   flex: 1;
 }
-.top {
-  height: 75%;
-  padding: 0 10px;
+.events {
+  position: fixed;
+  width: 168px;
+  padding: 10px;
   border: 1px solid #ccc;
   background: #eee;
+  text-align: left;
 }
-.bottom {
-  flex: 1;
+.events-btn {
+  margin-left: 200px;
+}
+.operation > button {
+  margin: 10px;
+}
+p > label {
+  margin: 10px;
+}
+.center-block {
+  display: block;
+  width: 21%;
+  margin: auto;
+}
+#calendar {
+  height: 797px;
+}
+#external-events h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
 }
 #external-events .fc-event {
   margin: 3px 0;
   cursor: move;
+}
+#calendar td{
+  border: 1px solid #ccc;
 }

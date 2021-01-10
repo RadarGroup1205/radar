@@ -7,28 +7,48 @@
   <title>计划安排</title>
   <link rel="stylesheet" href="css/calendar.css">
   <link rel="stylesheet" href="css/fullcalendar.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="js/jquery.js"></script>
   <script src="js/fullcalendar.js"></script>
   <script src="js/zh-cn.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/time.js"></script>
   <script>
-
     document.addEventListener('DOMContentLoaded', function () {
       /*------------初始化日历------------------------------------*/
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: {
-          left: 'prevYear,prev,next,nextYear,today',
+          left: 'prev,next,today',
           center: 'title',
-          right: 'dayGridMonth,dayGridWeek,dayGridDay,listMonth'
+          right: 'dayGridMonth,dayGridWeek,listMonth'
+        },
+        buttonText: {
+          listMonth: '月列表'
         },
         locale: 'zh-CN',
         initialView: 'dayGridMonth',
+        businessHours: true,
         weekNumbers: true,
         navLinks: true,
+        selectable: true,
+        select: function (arg) {
+          // $('#add').modal();
+          var title = prompt('任务名称:');
+          if (title) {
+            calendar.addEvent({
+              title: title,
+              start: arg.start,
+              end: arg.end,
+              allDay: arg.allDay
+            })
+          }
+          calendar.unselect()
+        },
         eventClick: function (arg) {
           if (confirm('确定要删除这个任务安排吗？')) {
             arg.event.remove()
-            // 要返回到任务列表里
+            // 要把任务回收到任务列表里
           }
         },
         editable: true,
@@ -37,56 +57,56 @@
           arg.draggedEl.parentNode.removeChild(arg.draggedEl);
         },
         events: [
-        {
-          title: '全天任务',
-          start: '2021-01-01'
-        },
-        {
-          title: '长期任务',
-          start: '2021-01-07',
-          end: '2021-01-10'
-        },
-        {
-          groupId: 999,
-          title: '重复工作',
-          start: '2021-01-09T16:00:00'
-        },
-        {
-          groupId: 999,
-          title: '重复工作',
-          start: '2021-01-16T16:00:00'
-        },
-        {
-          title: '谈判',
-          start: '2021-01-11',
-          end: '2021-01-13'
-        },
-        {
-          title: '会议',
-          start: '2021-01-12T10:30:00',
-          end: '2021-01-12T12:30:00'
-        },
-        {
-          title: '午餐',
-          start: '2021-01-12T12:00:00'
-        },
-        {
-          title: '会议',
-          start: '2021-01-12T14:30:00'
-        },
-        {
-          title: '快乐时光',
-          start: '2021-01-12T17:30:00'
-        },
-        {
-          title: '晚餐',
-          start: '2021-01-12T20:00:00'
-        },
-        {
-          title: '生日派对',
-          start: '2021-01-13T19:00:00'
-        }
-      ]
+          {
+            title: '全天任务',
+            start: '2021-01-01'
+          },
+          {
+            title: '长期任务',
+            start: '2021-01-07',
+            end: '2021-01-10'
+          },
+          {
+            groupId: 999,
+            title: '重复工作',
+            start: '2021-01-09T16:00:00'
+          },
+          {
+            groupId: 999,
+            title: '重复工作',
+            start: '2021-01-16T16:00:00'
+          },
+          {
+            title: '小任务',
+            start: '2021-01-11',
+            end: '2021-01-13'
+          },
+          {
+            title: '会议',
+            start: '2021-01-11T10:30:00',
+            end: '2021-01-12T12:30:00'
+          },
+          {
+            title: '午餐',
+            start: '2021-01-12T12:00:00'
+          },
+          {
+            title: '会议',
+            start: '2021-01-12T14:30:00'
+          },
+          {
+            title: '快乐时光',
+            start: '2021-01-12T17:30:00'
+          },
+          {
+            title: '晚餐',
+            start: '2021-01-12T20:00:00'
+          },
+          {
+            title: '生日派对',
+            start: '2021-01-13T19:00:00'
+          }
+        ]
       });
       /*------------初始化任务------------------------------------*/
       var containerEl = document.getElementById('external-events-list');
@@ -100,23 +120,43 @@
       });
       calendar.render();
     });
-
+    $(document).ready(function () {
+      $('#btn_add').click(function () {
+        console.log('add');
+        $('#add').modal();
+        initDate($('#sDate'),1);
+        initDate($('#eDate'),1);
+      });
+      $('#btn_search').click(function () {
+        console.log('search');
+        $('#search').modal();
+        initDate($('#ssDate'),0);
+        initDate($('#seDate'),0);
+      });
+      $("#isAllday").click(function () {
+        if ($("#isAllday").prop("checked") == true) {
+          $("#isAllday").val("1");
+          $("#startTime,#endTime").hide();
+        } else {
+          $("#isAllday").val("0");
+          $("#startTime,#endTime").show();
+        };
+      });
+      
+    })
+    
   </script>
 </head>
 
 <body>
+  <!-- PAGE CONTENT BEGINS -->
   <div class="two-column-layout">
-    <!-- PAGE CONTENT BEGINS -->
     <div class="left">
       <div id="calendar"></div>
     </div>
-
     <div class="right">
-      <div class="right top" id="external-events">
-        <div class="events-header">
-          <h4>待安排任务</h4>
-        </div>
-
+      <div class="events" id="external-events">
+        <h4>待安排任务</h4>
         <div id='external-events-list'>
           <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
             <div class='fc-event-main'>任务 1</div>
@@ -135,14 +175,99 @@
           </div>
         </div>
       </div>
+      <div class="events-btn btn-group operation">
+        <button id="btn_add" class="btn btn-success">增加任务计划</button>
+        <button id="btn_search" class="btn btn-default">查询任务计划</button>
+      </div>
     </div>
   </div>
-  <div class="right bottom">
-
-  </div>
-  </div>
-  </div>
   <!-- PAGE CONTENT ENDS -->
+  <!-- DIALOG CONTENT BEGINS -->
+  <div id="add" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">增加任务计划</h4>
+        </div>
+        <div id="addModal" class="modal-body">
+          <table style="border-collapse:separate; border-spacing:20px 20px;">
+            <tbody>
+              <tr>
+                <td><label>任务:</label></td>
+                <td><input id="title" class="form-control" type="text"></td>
+                <td><label class="checkbox-inline" for="isAllday">
+                  <input id="isAllday" type="checkbox">全天</label></td>
+              </tr>
+              <tr>
+                <td><label>任务类型:</label></td>
+                <td><input id="type" class="form-control" type="text"></td>
+              </tr>
+              <tr>
+                <td><label>开始时间:</label></td>
+                <td class="col-sm"><input id="sDate" class="form-control" type="date"></td>
+                <td><input id="sTime" class="form-control" type="time"></td>
+              </tr>
+              <tr>
+                <td><label>结束时间:</label></td>
+                <td class="col-sm"><input id="eDate" class="form-control" type="date"></td>
+                <td><input id="eTime" class="form-control" type="time"></td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;"><label>任务描述:</label></td>
+                <td> <textarea id="detail" class="form-control" rows="4" placeholder="任务描述"></textarea></td>
+                <td style="vertical-align: top;"><label>提醒:</label>
+                  <input id="remind" class="form-control" type="text"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <div class="center-block">
+            <button id="sAdd" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+            <button id="cAdd" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="search" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">查询任务计划</h4>
+        </div>
+        <div id="searchModal" class="modal-body">
+          <form class="form-inline" style="text-align: center;">
+            <p>
+              <label>&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期:</label>
+              <input id="ssDate" class="form-control" type="date">
+              <label>至</label>
+              <input id="seDate" class="form-control" type="date">
+            </p>
+            <p>
+              <label>任务类型:</label>
+              <select class="form-control">
+                <option value="">未进行</option>
+                <option value="">进行中</option>
+                <option value="">已完成</option>
+                <option value="">已超时</option>
+              </select>
+              <label>&nbsp;&nbsp;&nbsp;任务内容:</label>
+              <input id="sDetail" class="form-control" type="text">
+            </p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="center-block">
+            <button id="sSearch" type="button" class="btn btn-success" data-dismiss="modal">搜索</button>
+            <button id="cSearch" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
