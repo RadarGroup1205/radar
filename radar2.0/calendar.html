@@ -136,10 +136,10 @@
       $("#isAllday").click(function () {
         if ($("#isAllday").prop("checked") == true) {
           $("#isAllday").val("1");
-          $("#startTime,#endTime").hide();
+          $("#sTime,#eTime").attr('disabled',true);
         } else {
           $("#isAllday").val("0");
-          $("#startTime,#endTime").show();
+          $("#sTime,#eTime").attr('disabled',false);
         };
       });
       
