@@ -12,13 +12,26 @@
         <link rel="stylesheet" href="css/main.css">
 
     </head>
-    <body>
-        <div class="layui-card">
-            <div class="layui-card-header"></div>
-             <div class="layui-card-body">
-                <div id="EchartZhu" style="width: 1200px;height:500px;"></div>
-             </div>
+    <body style="background: #ffffff;">
+        <div class="leftfloat">
+            <div class="layui-card " style="width: 800px;">
+                 <div class="layui-card-body">
+                    <div id="EchartZhu" style="width: 100%;height:500px;"></div>
+                 </div>
+            </div>
+
+            
         </div>
+       <div class="rightfloat">
+        <table id="remincetable">
+
+        </table>
+       </div>
+        
+
+       
+          
+        
 
         <!-- <script>
         layui.config({
@@ -97,6 +110,32 @@
         
         
         <script>
+             layui.use('table',function() {
+               var table = layui.table;
+           
+           table.render({
+               elem:'#remincetable'
+               ,cols: [[
+                   {field:'id',title:' ',width:40}
+                   ,{field:'opt',title:'操作',width:130}
+                   ,{field:'check',title:'查看',width:60}
+               ]]
+               ,data:[{
+                   "id":"1"
+                   ,"opt":"设备总数"
+                   ,"check":"查看"
+               },
+               {
+                   "id":"2"
+                   ,"opt":"30天内新增设备"
+                   ,"查看":"查看"
+               },
+
+               ]
+               
+           })
+        })
+
          layui.config({
                 base:'js/echarts/'
             }).use(['element', 'echarts'], function() {

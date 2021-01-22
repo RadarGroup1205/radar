@@ -1,3 +1,11 @@
 .layui-tab-title .welcome .layui-tab-close{
     display: none;
 }
+
+.leftfloat{
+    float: left;
+}
+
+.rightfloat{
+    float:right;
+}
