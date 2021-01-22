@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/layui.css">
+    <link rel="stylesheet" href="css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/time.js"></script>
+    <script>
+        serverUrl = 'http://10.222.6.46:8080/radar_db';
+        // 初始化下拉框选项
+        function initSelect() {
+            try {
+                // 清空select列表数据，用remove整个option都没有了，改为empty
+                $('#subtask').empty();
+                // Ajax获取动态数据
+                $.ajax({
+                    // url: serverUrl + '/load',
+                    url: 'demo.json',
+                    type: 'post',
+                    data: {},
+                    success: function (data) {
+                        data = JSON.parse(data);  // 转换成json对象
+                        var subtask = data.subtask;
+                        var status = data.status;
+                        if (data) {
+                            // 添加第一个option值
+                            $('#subtask').prepend('<option value="0">------请选择------</option>');
+                            for (i = 0; i < subtask.length; i++) {
+                                $('#subtask').append('<option value="' + subtask[i] + '">' + subtask[i] + '</option>');
+                            }
+                        }
+                        else {
+                            alert('初始化下拉列表失败！');
+                            window.location.reload();
+                        }
+                    },
+                    error: function (msg) {
+                        alert('网络连接错误' + JSON.stringify(msg));
+                    }
+                });
+            } catch (error) {
+                window.location.reload();
+                alert(error.name + error.message);
+            }
+        }
+        // 打开修改模态框&回填数据
+        function initEdit(data) {
+            console.log(data.subtaskNo);
+            //清空表单
+            // $('#formInsertsalesgl')[0].reset();
+            //设置模态框标题
+            // $('#add').text('修改任务计划');
+            //设置表单的action
+            // $("#formInsertsalesgl").prop("action", "Savesale");
+            //回填表单
+            $('#title').val(data.monthNo);
+            // $('#subtask').val(data.subtaskNo);
+            $('#subtask option[text='+data.subtaskNo+']').prop('selected',true);
+            $('#sDate').val(data.startTime);
+            $('#eDate').val(data.endTime);
+            $('#staff').val(data.repairman);
+            $('#status').val(data.status);
+            $('#cTime').val(data.cTime);
+            $('#notes').val(data.notes);
+            $('#detail').val(data.plan);
+            //弹出模态框
+            $('#add').modal();
+        }
+    </script>
+    <style>
+        p>label {
+            width: 80px;
+            text-align: right;
+            padding: 5px;
+        }
+
+        .modal-dialog {
+            width: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 页面内容开始 -->
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <!-- 页面内容结束 -->
+    <!-- 弹框内容开始 -->
+    <!-- 添加计划 -->
+    <div id="add" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">新增任务计划</h4>
+                </div>
+                <div id="addModal" class="modal-body">
+                    <table style="border-collapse:separate; border-spacing:20px 20px;">
+                        <tbody>
+                            <tr>
+                                <td><label>任务名称:</label></td>
+                                <td><input id="title" class="form-control" type="text"></td>
+                                <td><label>归属子任务:</label></td>
+                                <td><select id="subtask" class="form-control"></select></td>
+                            </tr>
+                            <tr>
+                                <td><label>开始时间:</label></td>
+                                <td><input id="sDate" class="form-control" type="date"></td>
+                                <td><label>结束时间:</label></td>
+                                <td><input id="eDate" class="form-control" type="date"></td>
+                            </tr>
+                            <tr>
+                                <td><label>人员:</label></td>
+                                <td><select id="staff" class="form-control">
+                                        <option>------请选择------</option>
+                                        <option>刘备</option>
+                                        <option>关羽</option>
+                                        <option>马超</option>
+                                    </select></td>
+                                <td><label>任务状态:</label></td>
+                                <td><select id="status" class="form-control" disabled>
+                                        <option>未开始</option>
+                                        <option>进行中</option>
+                                        <option>滞后</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td><label>修改时间:</label></td>
+                                <td><input id="cTime" class="form-control" type="text" disabled></td>
+                                <td><label>备注:</label></td>
+                                <td><input id="notes" class="form-control" type="text" disabled></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;"><label>任务描述:</label></td>
+                                <td> <textarea id="detail" class="form-control" rows="4" placeholder="任务描述"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <div class="center-block">
+                        <button id="sAdd" type="button" class="btn btn-success" data-dismiss="modal">保存</button>
+                        <button id="cAdd" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查询计划 -->
+    <div id="search" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">查询任务计划</h4>
+                </div>
+                <div id="searchModal" class="modal-body">
+                    <form class="form-inline">
+                        <p>
+                            <label>时间范围：</label>
+                            <input id="ssDate" class="form-control" type="date">
+                            至
+                            <input id="seDate" class="form-control" type="date">
+                        </p>
+                        <p>
+                            <label>归属任务：</label>
+                            <select id="sSubtask" class="form-control">
+                                <option value="">未进行</option>
+                                <option value="">进行中</option>
+                                <option value="">已完成</option>
+                                <option value="">已超时</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>任务状态：</label>
+                            <select class="form-control">
+                                <option value="">未进行</option>
+                                <option value="">进行中</option>
+                                <option value="">已完成</option>
+                                <option value="">已超时</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>任务内容：</label>
+                            <input id="sDetail" class="form-control" type="text">
+                        </p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="center-block">
+                        <button id="sSearch" type="button" class="btn btn-success" data-dismiss="modal">查询</button>
+                        <button id="cSearch" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹框内容结束 -->
+
+    <!-- 方法渲染表格 -->
+    <script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="addPlan">新增计划</button>
+    <button class="layui-btn layui-btn-sm" lay-event="searchPlan">查询计划</button>
+  </div>
+</script>
+
+    <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+    <script src="js/layui.js" charset="utf-8"></script>
+
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            table.render({
+                elem: '#test'
+                , url: serverUrl + '/GetMonth'
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['filter', 'exports', 'print']
+                , title: '用户数据表'
+                , cols: [[
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true, templet: function (res) { return res.monthlyScheduleId } }
+                    , { field: 'title', title: '任务名', width: 100, edit: 'text', templet: function (res) { return res.monthNo } }
+                    , { field: 'subtask', title: '归属子任务', width: 120, sort: true, templet: function (res) { return res.subtaskNo } }
+                    , { field: 'sDate', title: '开始时间', width: 110, sort: true, templet: '<div>{{d.startTime}}</div>' }
+                    , { field: 'eDate', title: '结束时间', width: 110, sort: true, templet: '<div>{{d.endTime}}</div>' }
+                    , { field: 'staff', title: '人员', width: 120 }
+                    , { field: 'detail', title: '任务描述', templet: '<div>{{d.plan}}</div>' }
+                    , { field: 'status', title: '任务状态', width: 110, sort: true }
+                    , { field: 'cTime', title: '修改时间', width: 110, sort: true, templet: '<div>{{d.notesTime}}</div>' }
+                    , { field: 'notes', title: '备注', width: 80 }
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                ]]
+                , page: true
+            });
+
+            //头工具栏事件
+            table.on('toolbar(test)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'addPlan':
+                        console.log('add');
+                        $('#add').modal();
+                        initDate($('#sDate'), 1);
+                        initDate($('#eDate'), 1);
+                        initDate($('#cTime'), 1);
+                        initSelect();
+                        break;
+                    case 'searchPlan':
+                        console.log('search');
+                        $('#search').modal();
+                        initDate($('#ssDate'), 0);
+                        initDate($('#seDate'), 0);
+                        break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    console.log('edit');
+                    initSelect();
+                    initEdit(data);
+                    // layer.alert(JSON.stringify(data));
+                    // layer.prompt({
+                    //     formType: 2
+                    //     , value: data.email
+                    // }, function (value, index) {
+                    //     obj.update({
+                    //         email: value
+                    //     });
+                    //     layer.close(index);
+                    // });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

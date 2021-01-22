@@ -132,7 +132,11 @@
 						</dl>
 					</li>
 					<li class="layui-nav-item">
-						<a class="site-active" tab-name="计划安排" tab-url="calendar.html" tab-layid="9">计划安排</a></li>
+						<a href="javascript:;">计划安排</a>
+						<dl class="layui-nav-child">
+							<dd><a class="site-active" tab-name="月计划" tab-url="month-plan.html" tab-layid="8">月计划</a></dd>
+							<dd><a class="site-active" tab-name="周计划" tab-url="calendar.html" tab-layid="9">周计划</a></dd>
+						</dl>
 					<li class="layui-nav-item">
 						<a href="javascript:;">用户管理</a>
 						<dl class="layui-nav-child">
@@ -147,7 +151,7 @@
 
 		<div class="layui-body">
 			<!-- 内容主体区域 -->
-			<div layui-body style="padding: 15px;">
+			<div style="padding: 0 10px;">
 				<div class="layui-tab layui-tab-brief" lay-allowClose="true" lay-filter="tabList">
 					<ul class="layui-tab-title">
 						<li class="layui-this welcome">
@@ -227,12 +231,12 @@
 				}
 
 
-				FrameWH();  //计算ifram层的大小
+				FrameWH();  //计算iframe层的大小
 
 			});
 
 
-			function FrameWH() { //计算ifram层的大小
+			function FrameWH() { //计算iframe层的大小
 				var h = $(window).height() - 41 - 10 - 60 - 10 - 44 - 10;
 				$("iframe").css("height", h + "px");
 			}

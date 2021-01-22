@@ -289,6 +289,38 @@
   </section>
 </body>
 <script>
+    $(function () {
+      try {
+        var strName = sessionStorage.getItem('userName');
+        var numType = Number(sessionStorage.getItem('userType'));
+        var strType = '用户';
+        switch (numType) {
+          case 0:
+            strType = '超级管理员';
+            break;
+          case 1:
+            strType = '主任务管理员';
+            break;
+          case 2:
+            strType = '子任务管理员';
+            var btn_add = document.getElementById('btn_add');                // 隐藏主任务维修表的添加按钮
+            var btn_del = document.getElementById('btn_delete');             // 隐藏主任务维修表的删除按钮
+            btn_add.style.display = 'none';
+            btn_del.style.display = 'none';
+            break;
+          case 3:
+            strType = '维修人员';
+            break;
+          default:
+            alert('没有此用户类型' + numType);
+        }
+        var strMsg = strName + '[' + strType + ']'
+        $("#user").html(strMsg);
+      }
+      catch (ex) {
+        alert(ex.message);
+      }
+      });
 
   let serveUrl = 'http://202.114.41.165:8080/radar_db'
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间','任务维修周期','负责部门','负责人','任务状态']
@@ -300,8 +332,9 @@
   console.log(str)
 
   function subtaskdata(value) {
+    console.log("成功执行函数")
     $.ajax({
-        url: serveUrl + "/TaskToSub",
+        url: serveUrl+ "/SubSelect",
         type:"post",
         data:{id:str},
         dataType:"json",
@@ -309,19 +342,27 @@
         success:function(result){
             if(result != null && result != "" && result != undefined){
                 var data_ = result.data;
-                value=data_;
+                console.log(data_)
+                for(i in data_){
+                  if(data_[i].subtaskNo == str){
+                    value = data_[i]
+                  }
+                }
             }
         }
-    })
+    }
+    )
     return value;
   }
   data = subtaskdata();
-  console.log(data)
+  data1=[]
+  data1.push(data)
+  console.log(data1)
 
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      //"ajax": {url :serveUrl + "/RadarSelect",
-      "data": data,
+      //"ajax": {url :serveUrl + "/SubSelect"},
+      "data": data1,
   
       "columns": [
                 { "data": "subtaskNo" },
