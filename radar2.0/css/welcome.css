@@ -1,0 +1,30 @@
+.leftfloat{
+    float: left;
+    
+}
+.rightfloat{
+    float:right;
+}
+
+.fullscreen-layout{
+    display: flex;
+    flex-direction: column;
+}
+
+.two-column-layout {
+    display: flex;
+    width: 100%;
+    height: 400px;}
+
+.left {
+        width: 50px;
+       
+    }
+.center {
+        width: 100px;
+       
+    }
+.right {
+        
+        float: right;
+    }

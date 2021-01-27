@@ -7,14 +7,22 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
         <title>主页</title>
         <link rel="stylesheet" href="layui/css/layui.css">
+        <link rel="stylesheet" href="css/welcome.css">
         <script src="layui/layui.js"></script>
         
         <link rel="stylesheet" href="css/main.css">
+        <style type="text/css">
+        .site-active:hover {
+			cursor: pointer;
+		}
+            table .red {color:#FF0000}
+        </style>
 
     </head>
     <body style="background: #ffffff;">
-        <div class="leftfloat">
-            <div class="layui-card " style="width: 800px;">
+    <div class="two-column-layout">
+        <div class="left" style="width: 60%;">
+            <div class="layui-card " >
                  <div class="layui-card-body">
                     <div id="EchartZhu" style="width: 100%;height:500px;"></div>
                  </div>
@@ -22,93 +30,35 @@
 
             
         </div>
-       <div class="rightfloat">
-        <table id="remincetable">
-
+       <div class="right" style="width: 30%;" >
+        <table id="remincetable" class="layui-table">
+            <colgroup>
+                <col width="50">
+                <col width="100">
+                <col width="50"> 
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>操作</th>
+                    <th>查看</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td >超期预警</td>
+                        <td ><a class="site-active" tab-name="主任务维修表" tab-url="main.html" tab-layid="1"><u>查看</u></a></td>
+                    </tr>
+                </tbody>
+            </thead>
         </table>
        </div>
-        
+    </div>
 
        
           
         
-
-        <!-- <script>
-        layui.config({
-                base:'js/'
-            }).extend({echarts:'echarts/echarts.js'}).use(['element', 'echarts'], function() {
-            var element = layui.element,
-                $=layui.jquery,
-                echarts = layui.echarts;
-            var chartZhu = echarts.init(document.getElementById('EchartZhu'))
-            //指定图表配置项和数据
-            var optionchart = {
-                    title: {
-                        text: '商品订单'
-                    },
-                    tooltip: {},
-                    legend: {
-                        data: ['销量']
-                    },
-                    xAxis: {
-                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        name: '销量',
-                        type: 'bar', //柱状
-                        data: [100,200,300,400,500,600,700],
-                        itemStyle: {
-                            normal: { //柱子颜色
-                                color: 'red'
-                            }
-                        },
-                    },{
-                        name:'产量',
-                        type:'bar',
-                        data:[120,210,340,430,550,680,720],
-                        itemStyle:{
-                            normal:{
-                                color:'blue'
-                            }
-                        }
-                    }]
-                };
-
-                
-                chartZhu.setOption(optionchart,true);
-
-        });
-           
-        </script> -->
-<!-- ----------------------------------------------------------------------------------------------------- -->
-        <!-- <script src="js/echarts/echarts.js"></script>
-        <script>
-            var myChart = echarts.init(document.getElementById('EchartZhu'));
-            var option = { 
-                title: {
-                    text: '任务条目'
-                },
-            tooltip:{},
-            legend: {
-                data:['百分比']
-            },
-            xAxis: {
-                data: ["任务一","任务二","任务三","任务四","任务五","任务六"]
-            },
-            yAxis: {},
-            series: [{
-                name: '百分比',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        };     
-        myChart.setOption(option); -->
-
-        
-        
+<!-- 
         <script>
              layui.use('table',function() {
                var table = layui.table;
@@ -134,8 +84,8 @@
                ]
                
            })
-        })
-
+        }) -->
+        <script>
          layui.config({
                 base:'js/echarts/'
             }).use(['element', 'echarts'], function() {
@@ -143,7 +93,7 @@
                 $=layui.jquery,
                 echarts = layui.echarts;
                 
-        let serveUrl = 'http://202.114.41.165:8080/radar_db'
+        let serveUrl = 'http://10.222.6.46:8080/radar_db'
         var myChart = echarts.init(document.getElementById('EchartZhu'));
         var labelRight = {
             position: 'right'
@@ -198,7 +148,7 @@
         var Name=[];
         var Cycle=[];
         $.ajax({
-            url:serveUrl+'/select',
+            url:serveUrl+'/Select',
             type:'post',
             dataType:'json',
             async:false,
@@ -229,8 +179,11 @@
             }
            
         });
+        
     
 })
+
+        
         </script>
     </body>
 </html>
