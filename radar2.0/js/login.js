@@ -1,5 +1,6 @@
 // 接口地址
-let serverUrl = 'http://202.114.41.165:8080/radar_db'
+// let serverUrl = 'http://202.114.41.165:8080/radar_db'
+let serverUrl = 'http://10.222.6.46:8080/radar_db'
 
 // 用回车提交数据
 function keyLogin() {
@@ -23,7 +24,7 @@ function getUser() {
 
 		// Ajax提交表单数据
 		$.ajax({
-			url: serverUrl + '/load',                                   //后台提供的服务器（接口） config.baseServerUrl + '/account/login',          
+			url: serverUrl + '/Load',                                   //后台提供的服务器（接口） config.baseServerUrl + '/account/login',          
 			type: 'post',
 			data: {
 				name: username,
@@ -33,7 +34,7 @@ function getUser() {
 			success: function (data) {                                  //data，接口返回来的用户权限等级
 				console.log(data);
 
-				if (data == '0') {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
+				if (data) {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
 					sessionStorage.setItem('loginState','1');
 					sessionStorage.setItem('userName',username);
 					sessionStorage.setItem('userType',data);
