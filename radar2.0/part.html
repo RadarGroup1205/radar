@@ -330,7 +330,7 @@
   </section>
 </body>
 <script>
-  let serveUrl = 'http://202.114.41.165:8080/radar_db'
+  let serveUrl = 'http://10.222.6.46:8080/radar_db'
   var str = location.search
   if (str.indexOf("?") != -1) {
                         var str = str.substr(1);
@@ -339,7 +339,7 @@
 
   function subtaskdata(data ,value) {
     $.ajax({
-        url:serveUrl + "/RadarSelect",
+        url:serveUrl + "/PartmainSelect",
         type:"post",
         data:{id:str},
         dataType:"json",

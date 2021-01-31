@@ -14,7 +14,7 @@
   <script src="layui/layui.js"></script>
   <style>
     .content {
-      margin: 50px auto;
+      margin: 5px auto;
       border: 1px solid #ccc;
     }
 
@@ -343,7 +343,7 @@
 
 <script>
   
-  let serveUrl = 'http://202.114.41.165:8080/radar_db'
+  let serveUrl = 'http://10.222.6.46:8080/radar_db'
   var data = ['49288-0957']
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '计划开始时间', '计划结束时间', '计划维修周期', '负责部门', '负责人', '负责人工号', '任务状态', '维修结束时间', '维修工期']
   $(function () {
@@ -356,7 +356,7 @@
   },
   ];
     var table = $('#任务基本属性').DataTable({
-      "ajax": serveUrl + "/select",
+      "ajax": serveUrl + "/Select",
 
       "columns": [
         { "data": "taskNo" },
@@ -454,7 +454,7 @@
       console.log('addTasksInfo');
       //获得添加弹窗的输入信息
       $.ajax({
-        url: serveUrl + "/add",                                          //后台提供的服务器（接口） config.baseServerUrl + '/account/login', 
+        url: serveUrl + "/Add",                                          //后台提供的服务器（接口） 
         type: 'post',                                               //请求方式是post
         data: {
           taskNo: document.getElementById("taskNo").value,
@@ -472,6 +472,7 @@
           // rEndTime: document.getElementById("rEndTime").value,
           // rTimes: document.getElementById("rTimes").value,
         },
+        success:console.log("数据上传成功！")
       })
 
       if (data.length) {
@@ -579,11 +580,11 @@
       console.log(table.rows('.selected').data()[0].radarmaintenanceId)
       $.ajax({
         type: "post",
-        url: "http://127.0.0.1:8081/delete",
+        url: serveUrl+ "/Delete",
         async: true,
         data: {
           datalength: table.rows('.selected').data().length,
-          deldata: table.rows('.selected').data()[0].radarmaintenanceId
+          deldata: table.rows('.selected').data()[0].任务编号
         }
       }
       )
