@@ -1,6 +1,6 @@
 // 接口地址
 // let serverUrl = 'http://202.114.41.165:8080/radar_db'
-let serverUrl = 'http://10.222.6.46:8080/radar_db'
+const serverUrl = 'http://10.222.6.46:8080/radar_db'
 
 // 用回车提交数据
 function keyLogin() {
@@ -13,10 +13,10 @@ function getUser() {
 
 	try {
 		// 获取登录用户信息
-		var username = document.getElementById('username').value;
-		var password = document.getElementById('password').value;
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
 
-		// ajax提交前表单校验，判断两个均不为空
+		// Ajax提交表单前校验，都不能为空
 		if (username == '' || password == '') {
 			alert('用户名和密码不能为空！');
 			return false;
@@ -24,22 +24,21 @@ function getUser() {
 
 		// Ajax提交表单数据
 		$.ajax({
-			url: serverUrl + '/Load',                                   //后台提供的服务器（接口） config.baseServerUrl + '/account/login',          
+			url: serverUrl + '/Load',                                   //后台提供的服务器（接口）
 			type: 'post',
 			data: {
 				name: username,
-				// pwd: password
 				pwd: md5(password)
 			},
 			success: function (data) {                                  //data，接口返回来的用户权限等级
 				console.log(data);
 
 				if (data) {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
-					sessionStorage.setItem('loginState','1');
-					sessionStorage.setItem('userName',username);
-					sessionStorage.setItem('userType',data);
-					// console.log('登录成功');
-					// console.log(sessionStorage.getItem('userName'));
+					sessionStorage.setItem('loginState', '1');
+					sessionStorage.setItem('userName', username);
+					sessionStorage.setItem('userType', data);
+					console.log('登录成功');
+					console.log(sessionStorage.getItem('userName'));
 					window.location.href = 'index.html';
 				}
 				else {
@@ -47,7 +46,7 @@ function getUser() {
 					window.location.reload();
 				}
 			},
-			error: function(msg) {
+			error: function (msg) {
 				alert('登录失败\n网络连接错误' + JSON.stringify(msg));
 			}
 			// error: function (XMLHttpRequest, textStatus, errorThrown) {

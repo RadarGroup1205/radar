@@ -1,55 +1,34 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>装备修理信息化控制平台</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 
-	<!-- css -->
-	<link rel="stylesheet" href="css/login.css">
-
-	<!-- js -->
-	<script src="js/jquery.js"></script>
-	<script src="js/login.js"></script>
-	<!--md5加密的js文件-->
-	<script src="js/md5.js"></script>
+  <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
-	<div class="main">
-		<div class="title">
-			<div class="header">装备修理信息化控制平台</div>
-		</div>
-
-		<div class="login-form">
-			<!--输入框-->
-			<div class="input-content" onkeydown="keyLogin()">
-				<!--autoFocus-->
-				<div>
-					<input type="text" name="name" id="username" placeholder="用户名" required value="Admin"/>
-				</div>
-
-				<div style="margin-top: 16px">
-					<input type="password" name="pwd" id="password" placeholder="登录密码" required autocomplete="off"
-						maxlength="32" value="123456"/>
-				</div>
-			</div>
-
-			<!--登录按钮-->
-			<div style="text-align: center">
-				<input type="submit" class="enter-btn" id="submit" value="登&nbsp;录" onclick="getUser()">
-			</div>
-
-			<div class="foot">
-				<!-- <div class="left"><span>注册账户</span></div> -->
-				<div class="right"><span>忘记密码 ?</span></div>
-			</div>
-
-			<div class="foot-msg">说明：试用用户名Admin或test，密码为123456。</div>
-		</div>
-	</div>
+  <div class="box">
+    <div class="top">
+      <h2>装备修理信息化控制平台</h2>
+    </div>
+    <div class="main" onkeydown="keyLogin()">
+      <input type="text" id="username" placeholder="用户名" required value="Admin">
+      <input type="password" id="password" placeholder="登录密码" required autocomplete="off" maxlength="32" value="123456">
+      <input type="submit" class="btn" id="submit" value="登&nbsp;录" onclick="getUser()">
+    </div>
+    <div class="footer">
+      <a href="#">忘记密码？</a>
+      <p>说明：试用用户名Admin或test，密码为123456。</p>
+    </div>
+  </div>
+  <!-- js -->
+  <script src="js/jquery.js"></script>
+  <script src="js/md5.js"></script>
+  <script src="js/login.js"></script>
 </body>
 
 </html>
