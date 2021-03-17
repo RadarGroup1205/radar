@@ -111,7 +111,7 @@ layui.use(['element', 'jquery'], function () {
 	// 切换用户
 	$('.user-trans').on("click", function () {
 		var type = $(this).attr("type-id");
-		sessionStorage.setItem('userType',type);
+		sessionStorage.setItem('userType', type);
 		window.location.reload();
 	})
 
