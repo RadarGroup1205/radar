@@ -1,45 +1,8 @@
-// 非法登录拦截
-const no = checkLog();
-
-// 初始化加载
-$(function () {
-
-	try {
-		var strName = sessionStorage.getItem('userName');
-		var numType = Number(sessionStorage.getItem('userType'));
-		var strType = '用户';
-		switch (numType) {
-			case 0:
-				strType = '超级管理员';
-				break;
-			case 1:
-				strType = '主任务管理员';
-				var divD = document.getElementById('3');                // 隐藏零部件维修表
-				divD.style.display = 'none';
-				break;
-			case 2:
-				strType = '子任务管理员';
-				var divD = document.getElementById('1');                // 隐藏主任务维修表
-				divD.style.display = 'none';
-				break;
-			case 3:
-				strType = '维修人员';
-				var divD = document.getElementById('1');                // 隐藏主任务、子任务维修表
-				divD.style.display = 'none';
-				divD = document.getElementById('2');
-				divD.style.display = 'none';
-				break;
-			default:
-				alert('没有此用户类型' + numType);
-		}
-		var strMsg = strName + '[' + strType + ']'
-		$("#user").html(strMsg);
-	}
-	catch (ex) {
-		alert(ex.message);
-	}
-
-});
+// 右上角用户信息设置
+function setUser(obj) {
+	const strMsg = obj.name + '[' + obj.depart + ']'
+	$("#user").html(strMsg);
+}
 
 layui.use(['element', 'jquery'], function () {
 	var element = layui.element,
@@ -108,15 +71,11 @@ layui.use(['element', 'jquery'], function () {
 		FrameWH();
 	})
 
-	// 切换用户
-	$('.user-trans').on("click", function () {
-		var type = $(this).attr("type-id");
-		sessionStorage.setItem('userType', type);
-		window.location.reload();
-	})
-
 	// 退出登录
 	$('.login-out').on("click", function () {
+		sessionStorage.removeItem('loginState');
+		// sessionStorage.removeItem('returnUrl');
+		sessionStorage.removeItem('user');
 		window.location.href = 'login.html';
 	})
 

@@ -5,40 +5,59 @@ const serverUrl = 'http://10.222.6.46:8080/radar_db'
 // 用回车提交数据
 function keyLogin() {
 	if (event.key == 'Enter')                                        //回车键的键值为13
-		document.getElementById('submit').click();                  //调用登录按钮的登录事件
+		// document.getElementById('submit').click();                  //调用登录按钮的登录事件
+		loginIn();
+}
+
+// 生成一个用户对象字符串
+function getUser(userName, strUser) {
+	const user = JSON.parse(strUser);
+	const userType = user.data[0].result;
+	const userDepart = user.data[0].department;
+	const person = {
+		name: userName,
+		type: userType,
+		depart: userDepart
+	}
+	const man = JSON.stringify(person);
+	return man;
 }
 
 // 登录按钮事件响应
-function getUser() {
+function loginIn() {
 
 	try {
 		// 获取登录用户信息
-		const username = document.getElementById('username').value;
+		const userName = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 
 		// Ajax提交表单前校验，都不能为空
-		if (username == '' || password == '') {
+		if (userName == '' || password == '') {
 			alert('用户名和密码不能为空！');
 			return false;
 		}
 
 		// Ajax提交表单数据
 		$.ajax({
-			url: serverUrl + '/Load',                                   //后台提供的服务器（接口）
+			url: serverUrl + '/Load',
 			type: 'post',
 			data: {
-				name: username,
+				name: userName,
 				pwd: md5(password)
 			},
-			success: function (data) {                                  //data，接口返回来的用户权限等级
-				console.log(data);
-
-				if (data) {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
+			// 登录成功，返回用户权限等级和所在部门，并用户登录名一起构成一个用户对象字符串，缓存起来
+			success: function (res) {
+				if (res) {
 					sessionStorage.setItem('loginState', '1');
-					sessionStorage.setItem('userName', username);
-					sessionStorage.setItem('userType', data);
-					console.log('登录成功');
-					console.log(sessionStorage.getItem('userName'));
+					const person = getUser(userName, res);
+					sessionStorage.setItem('user', person);
+					// const url = sessionStorage.getItem('returnUrl');
+					// if (url) {
+					// 	window.location.href = url;
+					// }
+					// else {
+					// 	window.location.href = 'index.html';
+					// }
 					window.location.href = 'index.html';
 				}
 				else {
