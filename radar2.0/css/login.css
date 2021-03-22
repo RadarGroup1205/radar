@@ -1,125 +1,76 @@
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
-
-body {
-  background-color: dimgray;
+a {
+  text-decoration: none;
 }
-
-.main {
-  margin: 0 auto;
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 15px;
-  width: 350px;
-  height: 300px;
-  background: #FFFFFF;
-  /*以下css用于让登录表单垂直居中在界面,可删除*/
+.box {
+  /* 用绝对定位设置盒子水平垂直居中，注意负号 */
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -175px;
-  margin-left: -175px;
+  left:50%;
+  top:50%;
+  margin-left: -250px;
+  margin-top: -200px;
+  width: 480px;
+  height: 360px;
+  background-color: #fff;
+  cursor:default;
+  border-radius: 5px;
+  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, .3);
 }
-
-.title {
+.top {
   width: 100%;
   height: 80px;
-  line-height: 40px;
+  background-color: #4F4F4F;
 }
-
-.title span {
-  font-size: 18px;
-  color: #353f42;
-}
-
-.title:hover {
-  cursor: default;
-}
-
-.header {
-  background: #414141;
-  color: white;
+.top h2 {
+  /* 水平且垂直居中 */
+  line-height: 80px;
   text-align: center;
-  margin: -15px -25px 15px -25px;
-  padding: 10px;
-  text-transform: uppercase;
-}
-
-/* .title-msg {
-width: 100%;
-height: 64px;
-line-height: 64px;
-}
-
-.title-msg:hover{
-cursor: default	;
-}
-
-.title-msg span {
-font-size: 12px;
-color: #707472;
-} */
-
-.input-content {
-  width: 100%;
-  height: 120px;
-}
-
-.input-content input {
-  width: 330px;
-  height: 40px;
-  border: 1px solid #dad9d6;
-  background: #ffffff;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.enter-btn {
-  width: 350px;
-  height: 40px;
+  font-weight: 400;
   color: #fff;
-  background: #0bc5de;
-  line-height: 40px;
-  text-align: center;
-  border: 0px;
 }
-
-.foot {
+.main {
+  /* 处理外边距塌陷 */
+  overflow: hidden;
   width: 100%;
-  height: 20px;
-  color: #9b9c98;
-  font-size: 12px;
-  margin-top: 20px;
+  height: 220px;
 }
-
-.enter-btn:hover {
+.main input {
+  /* 转为块元素，盒子模型 */
+  display: block;
+  margin: 20px auto;
+  padding: 0 1em;
+  border: 1px solid #dad9d6;
+  width: 350px;
+  height: 50px;
+}
+.main .btn {
+  font-size: 18px;
+  color: #fff;
+  background-color: #1E9FFF;
+}
+.main .btn:hover{
+  background-color: #048cf1;
   cursor: pointer;
-  background: #1db5c9;
 }
-
-.foot div:hover {
-  cursor: pointer;
-  color: #484847;
-  font-weight: 600;
-}
-
-/* .left{
-float: left;
-} */
-.right {
-  float: right;
-}
-
-.foot-msg {
+.footer {
   width: 100%;
   height: auto;
-  font-size: 12px;
-  margin-top: 10px;
+}
+.footer a {
+  position: absolute;
+  right:10px;
+  padding: 10px 0;
+  color: #9b9c98;
+}
+.footer p{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
   text-align: center;
 }
-
-.foot-msg:hover {
-  cursor: default;
+.footer a:hover {
+  color:black;
 }
