@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-=======
 // 右上角用户信息设置
 function setUser(obj) {
 	const strMsg = obj.name + '[' + obj.depart + ']'
 	$("#user").html(strMsg);
 }
->>>>>>> f9492bb43923b59fadaa985f4a880569a151c473
 
 layui.use(['element', 'jquery'], function () {
 	var element = layui.element,

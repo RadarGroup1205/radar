@@ -1,71 +1,74 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="renderer" content="webkit">
-        <script src="js/jquery.js"></script>
-  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-        <title>主页</title>
-        <link rel="stylesheet" href="layui/css/layui.css">
-        <link rel="stylesheet" href="css/welcome.css">
-        <script src="layui/layui.js"></script>
-       
-        <script type="text/javascript" src="js/main.js"></script>
-        <link rel="stylesheet" href="css/main.css">
-        
-        <style type="text/css">
-        .site-active:hover {
-			cursor: pointer;
-		}
-            table .red {color:#FF0000}
-        </style>
 
-    </head>
-    <body style="background: #ffffff;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <script src="js/jquery.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>主页</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/welcome.css">
+    <script src="layui/layui.js"></script>
+
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <style type="text/css">
+        .site-active:hover {
+            cursor: pointer;
+        }
+
+        table .red {
+            color: #FF0000
+        }
+    </style>
+
+</head>
+
+<body style="background: #ffffff;">
     <div class="two-column-layout">
         <div class="left" style="width: 60%;">
-            <div class="layui-card " >
-                 <div class="layui-card-body">
+            <div class="layui-card ">
+                <div class="layui-card-body">
                     <div id="EchartZhu" style="width: 100%;height:130%;"></div>
-                 </div>
+                </div>
             </div>
 
-            
+
         </div>
-       <div class="right" style="width: 30%;" >
-        <table id="remincetable" class="layui-table">
-            <colgroup>
-                <col width="50">
-                <col width="100">
-                <col width="50"> 
-            </colgroup>
-        <div class="layui-layout-body">
-            <thead>
-                <tr>
-                    <th> </th>
-                    <th>操作</th>
-                    <th><a href="javascript:void(0);" onclick="createtab()">查看</a></th>
-                </tr>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td >超期预警</td>
-<<<<<<< HEAD
-=======
-                        <td ><a id="checkit" class="layui-btn layui-btn-primary layui-btn-xs" ><u>查看</u></a></td>
->>>>>>> f9492bb43923b59fadaa985f4a880569a151c473
-                    </tr>
-                </tbody>
-            </thead>
+        <div class="right" style="width: 30%;">
+            <table id="remincetable" class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="100">
+                    <col width="50">
+                </colgroup>
+                <div class="layui-layout-body">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th>操作</th>
+                            <th><a href="javascript:void(0);" onclick="createtab()">查看</a></th>
+                        </tr>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>超期预警</td>
+                            <td><a id="checkit" class="layui-btn layui-btn-primary layui-btn-xs"><u>查看</u></a></td>
+                        </tr>
+                    </tbody>
+                    </thead>
+                </div>
+            </table>
         </div>
-        </table>
-       </div>
     </div>
 
-       
-          
-        
-<!-- 
+
+
+
+    <!-- 
         <script>
              layui.use('table',function() {
                var table = layui.table;
@@ -92,189 +95,163 @@
                
            })
         }) -->
-<<<<<<< HEAD
-        <script>
-        function createtab() {      //search-1修改成相应标签的ID值
-            layui.use(['element','jquery'], function () {
-                let element=parent.layui.element;
-                //获取父级页面
-                element.tabAdd('tabList',{
-                    title:"任务详情",  
-                    content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html"></iframe>',
-                    id: "13" //lay-id的值
-                })
-                element.tabChange('tabList',"13")
-                })
-                };
-
-=======
-        <script >
->>>>>>> f9492bb43923b59fadaa985f4a880569a151c473
-         layui.config({
-                base:'js/echarts/'
-            }).use(['element', 'echarts'], function() {
-                var element = layui.element,
-                $=layui.jquery,
+    <script>
+        layui.config({
+            base: 'js/echarts/'
+        }).use(['element', 'echarts'], function () {
+            var element = layui.element,
+                $ = layui.jquery,
                 echarts = layui.echarts;
-                
-        let serveUrl = 'http://10.222.6.46:8080/radar_db'
-        var myChart = echarts.init(document.getElementById('EchartZhu'));
-        
-        var labelRight = {
-            position: 'right'
-        };
-        
-        option = {
-            title: {
-                text: '主任务进度时间',
-                
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+
+            let serveUrl = 'http://10.222.6.46:8080/radar_db'
+            var myChart = echarts.init(document.getElementById('EchartZhu'));
+
+            var labelRight = {
+                position: 'right'
+            };
+
+            option = {
+                title: {
+                    text: '主任务进度时间',
+
                 },
-                formatter:function(a){
-                    let list= []
-                    let listItem = ''
-                    var wholeTime = a[0].data+a[1].data
-                   
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    formatter: function (a) {
+                        let list = []
+                        let listItem = ''
+                        var wholeTime = a[0].data + a[1].data
+
                         list.push(
-                            a[0].name+'<br>'+
-                            '总计划维修天数: '+wholeTime+'<br>'+
-                            '<i style="display: inline-block;width: 10px;height: 10px;background: '+
-                            a[0].color+
-                            ';margin-right: 5px;border-radius: 50%;}"></i><span style=" display:inline-block;">'+
-                           '已进行天数: '+'</span>'+a[0].data+'<br>'+                         
-                            '<i style="display: inline-block;width: 10px;height: 10px;background: '+
-                            a[1].color+
-                            ';margin-right: 5px;border-radius: 50%;}"></i><span style=" display:inline-block;">'+
-                           '剩余天数: '+'</span>'+a[1].data
-                           
-                                   
+                            a[0].name + '<br>' +
+                            '总计划维修天数: ' + wholeTime + '<br>' +
+                            '<i style="display: inline-block;width: 10px;height: 10px;background: ' +
+                            a[0].color +
+                            ';margin-right: 5px;border-radius: 50%;}"></i><span style=" display:inline-block;">' +
+                            '已进行天数: ' + '</span>' + a[0].data + '<br>' +
+                            '<i style="display: inline-block;width: 10px;height: 10px;background: ' +
+                            a[1].color +
+                            ';margin-right: 5px;border-radius: 50%;}"></i><span style=" display:inline-block;">' +
+                            '剩余天数: ' + '</span>' + a[1].data
+
+
                         )
                         listItem = list.join('<br>')
                         return listItem
-                    
-                     
-                }
-            },
-            
-            legend:{
-                data:['已进行天数','剩余时间']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-<<<<<<< HEAD
-            legend: {
-                data: ['剩余时间']
-            },
-=======
-            
->>>>>>> f9492bb43923b59fadaa985f4a880569a151c473
-            xAxis: {
-                type: 'value',
-                boundaryGap: [0, 0.01],
-                
-                splitLine: {
-                    lineStyle: {
-                        type: 'dashed'
+
+
                     }
                 },
-                axisLabel:{formatter:'{value}（天）'}
-            },
-            yAxis: {
-                type: 'category',
-                axisLine: {show: false},
-                axisLabel: {show: true},
-                axisTick: {show: false},
-                splitLine: {show: false},
-                data: []
-            },
-            series: [
-                {
-                    name: '已进行天数',
-                    type: 'bar',
-                    stack:"数量",
+
+                legend: {
+                    data: ['已进行天数', '剩余时间']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01],
+
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    },
+                    axisLabel: { formatter: '{value}（天）' }
+                },
+                yAxis: {
+                    type: 'category',
+                    axisLine: { show: false },
+                    axisLabel: { show: true },
+                    axisTick: { show: false },
+                    splitLine: { show: false },
                     data: []
                 },
-                {
-                    name: '剩余时间',
-                    type: 'bar',
-<<<<<<< HEAD
-                    stack: '总量',
-=======
-                    stack:"数量",
->>>>>>> f9492bb43923b59fadaa985f4a880569a151c473
-                    data: []
-                }
-            ]
-        };
-        myChart.setOption(option,true);
-        myChart.showLoading();
-        var Name=[];
-        var Time=[];
-        var Cycle=[];
-        //option.series.data
-        $.ajax({
-            url:serveUrl+'/Select',
-            type:'post',
-            dataType:'json',
-            async:false,
-            cache:false,
-           
-           
-            success:function(dt){
-                if(dt){
-                    for(var i=0;i<dt.data.length;i++){
-                        Name.push(dt.data[i].taskName);
-                       
+                series: [
+                    {
+                        name: '已进行天数',
+                        type: 'bar',
+                        stack: "数量",
+                        data: []
+                    },
+                    {
+                        name: '剩余时间',
+                        type: 'bar',
+                        stack: "数量",
+                        data: []
                     }
-                }
-                if(dt){
-                    for(var i=0;i<dt.data.length;i++){
-                        Time.push(1);
+                ]
+            };
+            myChart.setOption(option, true);
+            myChart.showLoading();
+            var Name = [];
+            var Time = [];
+            var Cycle = [];
+            //option.series.data
+            $.ajax({
+                url: serveUrl + '/Select',
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                cache: false,
+
+
+                success: function (dt) {
+                    if (dt) {
+                        for (var i = 0; i < dt.data.length; i++) {
+                            Name.push(dt.data[i].taskName);
+
+                        }
                     }
-                }
-                if(dt){
-                    for(var i=0;i<dt.data.length;i++){
-                        Cycle.push(dt.data[i].taskCycle-Time[i]);
+                    if (dt) {
+                        for (var i = 0; i < dt.data.length; i++) {
+                            Time.push(1);
+                        }
                     }
+                    if (dt) {
+                        for (var i = 0; i < dt.data.length; i++) {
+                            Cycle.push(dt.data[i].taskCycle - Time[i]);
+                        }
+                    }
+
+                    myChart.hideLoading();
+                    myChart.setOption({
+                        yAxis: { data: Name },
+                        series: [{ data: Cycle }, { data: Time }]
+                    })
+                },
+                error: function (errorMsg) {
+                    alert("图表请求失败！");
+                    myChart.hideLoading();
                 }
-                
-                myChart.hideLoading();
-                myChart.setOption({
-                    yAxis:{data:Name},
-                    series:[{data:Cycle},{data:Time}]
+
+            });
+
+
+        })
+        $('#checkit').click(function () {      //search-1修改成相应标签的ID值
+            layui.use(['element', 'jquery'], function () {
+                let element = parent.layui.element;
+                //获取父级页面
+                element.tabAdd('tabList', {
+                    title: "任务详情",
+                    content: '<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html"></iframe>',
+                    id: "13" //lay-id的值
                 })
-            },
-            error:function(errorMsg){
-                alert("图表请求失败！");
-                myChart.hideLoading();
-            }
-           
+                element.tabChange('tabList', "13")
+            })
         });
-        
-    
-})
-        $('#checkit').click(function () {      //search-1修改成相应标签的ID值
-        layui.use(['element','jquery'], function () {
-            let element=parent.layui.element;
-            //获取父级页面
-            element.tabAdd('tabList',{
-                title:"任务详情",  
-                content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html"></iframe>',
-                id: "13" //lay-id的值
-            })
-            element.tabChange('tabList',"13")
-            })
-            });
-        
-        </script>
-    
-    </body>
+
+    </script>
+
+</body>
+
 </html>
