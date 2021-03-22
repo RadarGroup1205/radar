@@ -8,54 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="js/jquery.js"></script>
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/tablestyle.css">
   <script src="js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
   <script src="js/jquery.dataTables.js"></script>
   <script src="layui/layui.js"></script>
-  <style>
-    .content {
-      margin: 5px auto;
-      border: 1px solid #ccc;
-    }
-
-    .operation {
-      margin: 10px;
-    }
-
-    .operation>button {
-      margin: 10px;
-    }
-
-    #books_length {
-      float: left;
-      margin-left: 20px;
-    }
-
-    #books_filter {
-      float: right;
-      margin-right: 20px;
-    }
-
-    #books {
-      margin: 5px;
-    }
-
-    .center-block {
-      display: block;
-      width: 21%;
-      margin: auto;
-    }
-
-    .modal-dialog {
-      width: 760px;
-    }
-
-    .col-sm {
-      min-width: 80px;
-    }
-  </style>
 </head>
-
 <body>
   <section class="content">
     <div class="btn-group operation">
@@ -88,7 +46,7 @@
                     <label for="taskNo" class="control-label">任务编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="taskNo" type="text">
+                    <input class="form-control" id="taskNo" type="text" readonly="readonly">
                   </td>
                   <td>
                     <label for="taskName" class="control-label">任务名称:*</label>
@@ -127,7 +85,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <label for="pTimes" class="control-label">计划维修周期:*</label>
+                    <label for="pTimes" class="control-label">计划维修周期(天):*</label>
                   </td>
                   <td class="col-sm">
                     <input class="form-control" id="pTimes" type="text">
@@ -136,7 +94,12 @@
                     <label for="department" class="control-label">负责部门:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="department" type="text">
+                    <input class="form-control" id="department" list="departmentlist" type="text">
+                    <datalist id="departmentlist">
+                        <option value="生产计划部">
+                        <option value="维修一部">
+                        <option value="维修二部">
+                    </datalist>
                   </td>
                 </tr>
                 <tr>
@@ -202,7 +165,7 @@
                     <label for="taskNo" class="control-label">任务编号:*</label>
                   </td>
                   <td class="col-sm">
-                    <input class="form-control" id="etaskNo" type="text">
+                    <input class="form-control" id="etaskNo" type="text" readonly>
                   </td>
                   <td>
                     <label for="taskName" class="control-label">任务名称:*</label>
@@ -275,7 +238,7 @@
                     <input class="form-control" id="cost" type="text">
                   </td>
                   <td>
-                    <label for="schedule" class="control-label">维修进度:*</label>
+                    <label for="schedule" class="control-label">任务状态:*</label>
                   </td>
                   <td>
                     <div class="col-sm">
@@ -342,19 +305,10 @@
 </body>
 
 <script>
-  
-  let serveUrl = 'http://10.222.6.46:8080/radar_db'
+  var serveUrl = 'http://10.222.6.46:8080/radar_db'
   var data = ['49288-0957']
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '计划开始时间', '计划结束时间', '计划维修周期', '负责部门', '负责人', '负责人工号', '任务状态', '维修结束时间', '维修工期']
   $(function () {
-    var columnsDef = [
-  {
-      "title": "查看详情",
-      "render": function (data, type, row, meta) {
-          return '<a href="https://www.baidu.com/?' + data + '">' + data + '</a>';
-      }
-  },
-  ];
     var table = $('#任务基本属性').DataTable({
       "ajax": serveUrl + "/Select",
 
@@ -369,17 +323,17 @@
         { "data": "department" },
         { "data": "supervisor" },
         { "data": "supervisorNo" },
-
         { "data": "repairStarttime" },
         { "data": "repairFinishtime" },
         { "data": "repairCycle" },
-
         { "data": "cost" },
         { "data": "taskStatus" },
       ],
 
       "pagingType": "full_numbers",
+
       "bSort": true,
+
       "language": {
         "sProcessing": "处理中...",
         "sLengthMenu": "显示 _MENU_ 项结果",
@@ -404,11 +358,13 @@
           "sSortDescending": ": 以降序排列此列"
         }
       },
+
       "columnDefs": [{
         "searchable": false,
         "orderable": true,
         "targets": 0
       }],
+      
       "order": [[1, 'asc']]
 
     });
@@ -423,6 +379,7 @@
     // });
     //}).draw();    //  第一列变成了顺序编号
 
+     // 选择某一行 
     $('#任务基本属性 tbody').on('click', 'tr', function () {
       if ($(this).hasClass('selected')) {
         $(this).removeClass('selected');
@@ -433,11 +390,26 @@
       }
     });
 
+    $('#任务基本属性 tbody').on('dblclick','tr',function(){
+      console.log(table.rows('.selected').data()[0].taskNo);
+      var taskno = table.rows('.selected').data()[0].taskNo
+      layui.use(['element','jquery'], function () {
+          let element=parent.layui.element;
+          //获取父级页面
+          element.tabAdd('tabList',{
+              title:taskno+ "子任务详情",
+              content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html?'+taskno+'"></iframe>',
+              id: taskno //lay-id的值
+          })
+          element.tabChange('tabList',taskno)
+
+           })
+    });
+    
     //添加按钮响应
     $("#btn_add").click(function () {
       console.log('add');
-      $("#addTask").modal()
-
+      $("#addTask").modal({backdrop: 'static', keyboard: false})  // 当用户点击模态框外部时不会关闭模态框
       //获得服务器当前时间并设为初始值
       var time = new Date();
       var year = time.getFullYear();
@@ -447,83 +419,72 @@
       $("#pStartTime").attr("min", today);
       $('#pStartTime').val(today);
       $('#pEndTime').val(today);
+      var Tasknum = 'T0000' +  (table.column(0).data().length + 1);// 计算 新增的 任务编号
+      $('#taskNo').val(Tasknum);
+
+
     });
 
     //添加保存按钮响应
     $("#addTasksInfo").on('click', function () {
       console.log('addTasksInfo');
-      //获得添加弹窗的输入信息
-      $.ajax({
-        url: serveUrl + "/Add",                                          //后台提供的服务器（接口） 
-        type: 'post',                                               //请求方式是post
-        data: {
-          taskNo: document.getElementById("taskNo").value,
-          taskName: document.getElementById("taskName").value,
-          radarNo: document.getElementById("radarNo").value,
-          radarName: document.getElementById("radarName").value,
-          pStartTime: document.getElementById("pStartTime").value,
-          pEndTime: document.getElementById("pEndTime").value,
-          pTimes: document.getElementById("pTimes").value,
-          department: document.getElementById("department").value,
-          supervisor: document.getElementById("supervisor").value,
-          supervisorNo: document.getElementById("supervisorNo").value,
-          cost: document.getElementById("cost").value,
-          schedule: document.getElementById("schedule").value,
-          // rEndTime: document.getElementById("rEndTime").value,
-          // rTimes: document.getElementById("rTimes").value,
-        },
-        success:console.log("数据上传成功！")
-      })
-
-      if (data.length) {
+      var UploadData = true;
         if ($("#addTaskModal").find('input').val() !== '') {
-          var 任务编号 = $("#taskNo").val()
-          var 任务名称 = $("#taskName").val()
-          var 维修设备编号 = $("#radarNo").val()
-          var 维修设备名称 = $("#radarName").val()
-          var 计划开始时间 = $("#pStartTime").val()
-          var 计划结束时间 = $("#pEndTime").val()
-          var 计划维修周期 = $("#pTimes").val()
-          var 负责部门 = $("#department").val()
-          var 负责人 = $("#supervisor").val()
-          var 负责人工号 = $("#supervisorNo").val()
-          var 维修成本 = $("#cost").val()
-          var 任务状态 = $("#schedule").val()
-          // var 维修结束时间 = $("#rEndTime").val()
-          // var 维修工期 = $("#rTimes").val()
+            $.ajax({
+              url: serveUrl + "/Add",                                          //后台提供的服务器（接口） 
+              type: 'post',                                               //请求方式是post
+              data: {
+                taskNo: document.getElementById("taskNo").value,
+                taskName: document.getElementById("taskName").value,
+                radarNo: document.getElementById("radarNo").value,
+                radarName: document.getElementById("radarName").value,
+                Starttime: document.getElementById("pStartTime").value,
+                endTime: document.getElementById("pEndTime").value,
+                repairStartTime:"2020-02-02",
+                repairFinishTime:"2020-02-02",
+                taskCycle: document.getElementById("pTimes").value,
+                department: document.getElementById("department").value,
+                supervisor: document.getElementById("supervisor").value,
+                supervisorNo: document.getElementById("supervisorNo").value,
+                cost: document.getElementById("cost").value,
+                taskStatus: document.getElementById("schedule").value,
+                repairCycle: "4",
+                notes: "44",
+                notesTime:"2020-02-02",
+                // rEndTime: document.getElementById("rEndTime").value,
+                // rTimes: document.getElementById("rTimes").value,
+              },
+              success: function(){
+                alert("数据上传成功！")
+                table.draw();
+              },
+              error: function(){
+                UploadData = false;  //没用 这个会异步赋值，后面代码会执行
+                alert("数据上传失败！")
+              }
+            });
 
-          var addInfos = [].concat(任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人,负责人工号,维修成本, 任务状态);
-          alert(addInfos);
-          for (var i = 0; i < addInfos.length; i++) {
-            if (addInfos[i] === '') {
-              alert(titles[i] + '内容不能为空')
-            }
-          }
-          table.row.add([任务编号, 任务名称, 维修设备名称, 维修设备编号, 计划开始时间, 计划结束时间, 计划维修周期, 负责部门, 负责人,负责人工号,维修成本, 任务状态]).draw();
-          $("#addTaskModal").find('input').val(任务编号)
-        }
-      } else {
-        alert('请输入内容')
-      }
-    });
+        } else {
+                alert('请输入内容')
+              }
+            });
 
     //$("#addTasksInfo").click();    
 
     //添加取消按钮响应
     $("#cancelAdd").on('click', function () {
       console.log('cancelAdd');
-      $("#addTaskModal").find('input').val('')
     });
 
     //编辑按钮响应
     $('#btn_edit').click(function () {
       console.log('edit');
       if (table.rows('.selected').data().length) {
-        $("#editTaskInfo").modal()
+        $("#editTaskInfo").modal({backdrop: 'static', keyboard: false})
         var rowData = table.rows('.selected').data()[0];
         console.log(rowData)
         var inputs = $("#editTaskModal").find('input')
-        //console.log(inputs[0])
+        // console.log("---------",inputs[0])
         $(inputs[0]).val(rowData.taskNo)
         $(inputs[1]).val(rowData.taskName)
         $(inputs[2]).val(rowData.equipmentNo)
@@ -544,20 +505,44 @@
 
     //编辑保存按钮响应
     $("#saveEdit").click(function () {
-      var editTaskName = $("#editTaskName").val()
-      var editTaskAuthor = $("#editTaskAuthor").val()
-      var editTaskPrice = $("#editTaskPrice").val()
-      var editTaskPublish = $("#editTaskPublish").val()
-      var editTaskISBN = $("#editTaskISBN").val()
-      var newRowData = [].concat(editTaskName, editTaskAuthor, editTaskPrice, editTaskPublish, editTaskISBN);
-      var tds = Array.prototype.slice.call($('.selected td'))
-      for (var i = 0; i < newRowData.length; i++) {
-        if (newRowData[i] !== '') {
-          tds[i + 1].innerHTML = newRowData[i];
+      if ($("#editTaskModal").find('input').val() !== '') {
+            $.ajax({
+              url: serveUrl + "/Add",                                          //后台提供的服务器（接口） 
+              type: 'post',                                               //请求方式是post
+              data: {
+                taskNo: document.getElementById("taskNo").value,
+                taskName: document.getElementById("taskName").value,
+                radarNo: document.getElementById("radarNo").value,
+                radarName: document.getElementById("radarName").value,
+                Starttime: document.getElementById("pStartTime").value,
+                endTime: document.getElementById("pEndTime").value,
+                repairStartTime:"2020-02-02",
+                repairFinishTime:"2020-02-02",
+                taskCycle: document.getElementById("pTimes").value,
+                department: document.getElementById("department").value,
+                supervisor: document.getElementById("supervisor").value,
+                supervisorNo: document.getElementById("supervisorNo").value,
+                cost: document.getElementById("cost").value,
+                taskStatus: document.getElementById("schedule").value,
+                repairCycle: "4",
+                notes: "44",
+                notesTime:"2020-02-02",
+                // rEndTime: document.getElementById("rEndTime").value,
+                // rTimes: document.getElementById("rTimes").value,
+              },
+              success: function(){
+                alert("数据上传成功！")
+                table.draw();
+              },
+              error: function(){
+                UploadData = false;  //没用 这个会异步赋值，后面代码会执行
+                alert("数据上传失败！")
+              }
+            });
+
         } else {
-          alert(titles[i] + '内容不能为空')
-        }
-      }
+                alert('请输入内容')
+              }
     });
 
     //编辑取消按钮响应
@@ -569,7 +554,7 @@
     //删除按钮响应
     $('#btn_delete').click(function () {
       if (table.rows('.selected').data().length) {
-        $("#deleteTask").modal()
+        $("#deleteTask").modal({backdrop: 'static', keyboard: false})
       } else {
         alert('请选择项目');
       }
@@ -577,18 +562,23 @@
 
     //删除的删除按钮响应
     $('#delete').click(function () {
-      console.log(table.rows('.selected').data()[0].radarmaintenanceId)
+      console.log(table.rows('.selected').data()[0].taskNo);
       $.ajax({
         type: "post",
         url: serveUrl+ "/Delete",
-        async: true,
         data: {
           datalength: table.rows('.selected').data().length,
-          deldata: table.rows('.selected').data()[0].任务编号
-        }
+          taskId: table.rows('.selected').data()[0].taskNo
+        },
+        success:function(){
+          alert("删除成功");
+          table.row('.selected').remove().draw(false);
+        },
+        error:function(){
+          alert("出现错误，无法删除");
+        }, 
       }
       )
-      table.row('.selected').remove().draw(false);
     });
 
     //删除取消按钮响应
@@ -615,26 +605,7 @@
        });
   })
 
-  function addUser() {
-    $.ajax({
-      type: "post",
-      url: "/user/add",
-      async: true,
-      data: {
-        userName: $("#addUserName").val(),
-        userAddr: $("#addUserAddr").val(),
-        status: $("#addStatus").val(),
-        roleId: $("#addRole").val()
-      },
-      success: function (res) {
-        // 刷新表格数据，分页信息不会重置
-        firstTable.ajax.reload(null, false);
-        //清空添加表单数据
-        clearAddData();
-        alert(res)
-      }
-    });
-  }
+
 
   function deleteData(id) {
     $.ajax({

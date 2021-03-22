@@ -20,8 +20,51 @@
 			cursor: pointer;
 		}
 	</style>
-</head>
+	<script>
+			// 非法登录拦截
+	//const no = checkLog();
 
+	// 初始化加载
+	$(function () {
+
+	try {
+		var strName = sessionStorage.getItem('userName');
+		var numType = Number(sessionStorage.getItem('userType'));
+		var strType = '用户';
+		switch (numType) {
+			case 0:
+				strType = '超级管理员';
+				break;
+			case 1:
+				strType = '主任务管理员';
+				var divD = document.getElementById('3');                // 隐藏零部件维修表
+				divD.style.display = 'none';
+				break;
+			case 2:
+				strType = '子任务管理员';
+				var divD = document.getElementById('1');                // 隐藏主任务维修表
+				divD.style.display = 'none';
+				break;
+			case 3:
+				strType = '维修人员';
+				var divD = document.getElementById('1');                // 隐藏主任务、子任务维修表
+				divD.style.display = 'none';
+				divD = document.getElementById('2');
+				divD.style.display = 'none';
+				break;
+			default:
+				alert('没有此用户类型' + numType);
+		}
+		var strMsg = strName + '[' + strType + ']'
+		$("#user").html(strMsg);
+	}
+	catch (ex) {
+		alert(ex.message);
+	}
+
+	});
+	</script>
+</head>
 <body class="layui-layout-body">
 	<div class="layui-layout layui-layout-admin">
 		<div class="layui-header">
@@ -84,7 +127,7 @@
 						<dl class="layui-nav-child">
 							<dd><a class="site-active" tab-name="雷达信息" tab-url="radarinfo.html" tab-layid="6">雷达信息</a></dd>
 							<dd><a class="site-active" tab-name="零部件信息" tab-url="partinfo.html" tab-layid="7">零部件信息</a></dd>
-							<dd><a class="site-active" tab-name="超链接" tab-url="" tab-layid="8">超链接</a></dd>
+
 						</dl>
 					</li>
 					<li class="layui-nav-item">
@@ -130,7 +173,6 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="layui/layui.js"></script>
-
 	<script type="text/javascript" src="js/main.js"></script>
 </body>
 
