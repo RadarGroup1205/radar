@@ -93,20 +93,26 @@ function editModal(data) {
 // 提交新建/修改计划
 function planSubmit() {
   const titles = $('#title').val();
-  const startTime = $('#sDate').val();
-  const endTime = $('#eDate').val();
+  // const startTime = $('#sDate').val();
+  // const endTime = $('#eDate').val();
+  // const man = $('#staff').val();
+  // console.log(man);
   //判断名称不能为空
   if (titles != "") {
     // 加载层
     const load = layer.load();
     const url = $('#planForm').attr('action');
     const formData = $('#planForm').serialize();
+    // console.log(formData);
+    const params = decodeURIComponent(formData, true);
+    // console.log(params);
     $.ajax({
       url: url,
       type: 'post',
-      data: { formData },
+      data: { params },
       success: function (data) {
-        if (data) {
+        console.log(data);
+        if (data == 1) {
           //输出
           layer.alert('提交成功！', { icon: 1, title: '提示' });
           //刷新表格

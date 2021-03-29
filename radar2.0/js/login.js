@@ -12,8 +12,8 @@ function keyLogin() {
 // 生成一个用户对象字符串
 function getUser(userName, strUser) {
 	const user = JSON.parse(strUser);
-	const userType = user.data[0].result;
-	const userDepart = user.data[0].department;
+	const userType = user.result;
+	const userDepart = user.department;
 	const person = {
 		name: userName,
 		type: userType,
