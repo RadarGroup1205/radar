@@ -102,25 +102,35 @@ function planSubmit() {
     // 加载层
     const load = layer.load();
     const url = $('#planForm').attr('action');
-    const formData = $('#planForm').serialize();
+    // const formData = $('#planForm').serialize();
     // console.log(formData);
-    const params = decodeURIComponent(formData, true);
+    // const params = decodeURIComponent(formData, true);
     // console.log(params);
     $.ajax({
       url: url,
       type: 'post',
-      data: { params },
+      data: {
+        monthlyScheduleId: $('#planID').val(),
+        monthNo: $('#title').val(),
+        subtaskNo: $('#subtask').val(),
+        startTime: $('#sDate').val(),
+        endTime: $('#eDate').val(),
+        repairman: $('#staff').val(),
+        repairmanNo: $('#staffNo').val(),
+        status: $('#status').val(),
+        plan: $('#detail').val()
+      },
       success: function (data) {
         console.log(data);
-        if (data == 1) {
+        if (data === 1) {
           //输出
           layer.alert('提交成功！', { icon: 1, title: '提示' });
           //刷新表格
           table.reload('pTable', { where: { loginName: userName }, page: { curr: 1 } });
         }
         else {
-          layer.alert('提交失败！');
-          window.location.reload();
+          layer.alert('提交失败！', { icon: 2, title: '提示' });
+          // window.location.reload();
         }
       },
       error: function (msg) {
