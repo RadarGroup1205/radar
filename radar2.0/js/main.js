@@ -80,3 +80,18 @@ layui.use(['element', 'jquery'], function () {
 	})
 
 });
+
+//为tab设置拖拽属性，拖拽调换位置待续
+var srcdiv = null;
+var temp = null;
+$(".layui-tab-title").click(function(event){
+	event.target.setAttribute("draggable","true");
+	console.log(event.target.getAttribute("lay-id"))
+	temp = event.target.getAttribute("lay-id")
+	// $(this).children("li").on("click",function(){
+	// 	console.log("我尽力了。。。。")
+	// })
+})
+document.getElementsByClassName("layui-tab-title")[0].addEventListener('ondragenter',function(event){
+	console.log("1111111")
+})
