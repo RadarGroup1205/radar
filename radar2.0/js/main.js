@@ -1,7 +1,13 @@
-// 右上角用户信息设置
-function setUser(obj) {
-	const strMsg = obj.name + '[' + obj.depart + ']'
-	$("#user").html(strMsg);
+// 登录成功后右上角显示用户信息
+showUser();
+
+function showUser() {
+	let user = sessionStorage.getItem('user');
+	if (user) {
+		user = JSON.parse(user);
+		const strMsg = user.name + '[' + user.depart + ']';
+		$("#user").html(strMsg);
+	}
 }
 
 layui.use(['element', 'jquery'], function () {
@@ -71,27 +77,26 @@ layui.use(['element', 'jquery'], function () {
 		FrameWH();
 	})
 
-	// 退出登录
-	$('.login-out').on("click", function () {
-		sessionStorage.removeItem('loginState');
-		// sessionStorage.removeItem('returnUrl');
-		sessionStorage.removeItem('user');
-		window.location.href = 'login.html';
-	})
-
 });
 
 //为tab设置拖拽属性，拖拽调换位置待续
 var srcdiv = null;
 var temp = null;
-$(".layui-tab-title").click(function(event){
-	event.target.setAttribute("draggable","true");
+$(".layui-tab-title").click(function (event) {
+	event.target.setAttribute("draggable", "true");
 	console.log(event.target.getAttribute("lay-id"))
 	temp = event.target.getAttribute("lay-id")
 	// $(this).children("li").on("click",function(){
 	// 	console.log("我尽力了。。。。")
 	// })
 })
-document.getElementsByClassName("layui-tab-title")[0].addEventListener('ondragenter',function(event){
+document.getElementsByClassName("layui-tab-title")[0].addEventListener('ondragenter', function (event) {
 	console.log("1111111")
+})
+
+// 退出登录
+$('#logout').on('click', function () {
+	sessionStorage.removeItem('loginState');
+	sessionStorage.removeItem('user');
+	window.location.href = 'login.html';
 })

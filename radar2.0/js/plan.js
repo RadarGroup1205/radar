@@ -1,5 +1,109 @@
+const serverUrl = 'http://10.222.6.46:8080/radar_db';
+let user = sessionStorage.getItem('user');
+user = JSON.parse(user);
+const userName = user.name;
+
+layui.use('table', function () {
+  var table = layui.table;
+
+  table.render({
+    elem: '#pTable'
+    , url: serverUrl + '/GetMonth'
+    , where: { loginName: userName }
+    , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+    , defaultToolbar: ['filter', 'exports', 'print']
+    , title: '用户数据表'
+    , cols: [[
+      { type: 'checkbox', fixed: 'left' }
+      , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true, templet: function (res) { return res.monthlyScheduleId } }
+      , { field: 'title', title: '任务名', width: 100, edit: 'text', templet: function (res) { return res.monthNo } }
+      , { field: 'subtask', title: '归属子任务', width: 120, sort: true, templet: function (res) { return res.subtaskNo } }
+      , { field: 'sDate', title: '开始时间', width: 110, sort: true, templet: '<div>{{d.startTime}}</div>' }
+      , { field: 'eDate', title: '结束时间', width: 110, sort: true, templet: '<div>{{d.endTime}}</div>' }
+      , { field: 'staff', title: '执行人员', width: 120, templet: '<div>{{d.repairman}}</div>' }
+      , { field: 'detail', title: '任务描述', templet: '<div>{{d.plan}}</div>' }
+      , { field: 'status', title: '任务状态', width: 110, sort: true }
+      , { field: 'cTime', title: '反馈时间', width: 110, sort: true, templet: '<div>{{d.notesTime}}</div>' }
+      , { field: 'notes', title: '备注', width: 80 }
+      , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+    ]]
+    , page: true
+  });
+
+  //头工具栏事件
+  table.on('toolbar(pTable)', function (obj) {
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch (obj.event) {
+      case 'addPlan':
+        addModal();
+        break;
+    };
+  });
+
+  //监听行工具事件
+  table.on('tool(pTable)', function (obj) {
+    const data = obj.data;
+    //console.log(obj)
+    if (obj.event === 'edit') {
+      editModal(data);
+    } else if (obj.event === 'del') {
+      layer.confirm('真的删除行么', function (index) {
+        const code = deletePlan(data.monthlyScheduleId);
+        console.log(code);
+        if (code) {
+          obj.del();
+        }
+        layer.close(index);
+      });
+    }
+  });
+
+  var $ = layui.$, active = {
+    reload: function () {
+      let subtaskNo = $('#sSubtask').val();
+
+      //执行重载
+      table.reload('testReload', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        , where: {
+          key: {
+            subtask: subtaskNo
+          }
+        }
+      }, 'data');
+    }
+  };
+
+  $('.search-box .layui-btn').on('click', function () {
+    var type = $(this).data('type');
+    console.log($('#sSubtask').val());
+    active[type] ? active[type].call(this) : '';
+  });
+});
+
+// 监听按钮
+$(document).ready(function () {
+  // 提交
+  $('#submit').click(function () {
+    submitPlan();
+  })
+});
+
+// initDate($('#ssDate,#seDate'), 0);
+
+// 姓名与工号动态绑定
+// 数组存放员工对象，属性有姓名和工号
+let mans = [];
 // 初始化下拉框选项
-function initSelect(serverUrl) {
+initDroplist();
+// 职员变化，关联工号变化
+const staff = document.querySelector('#staff');
+staff.addEventListener('input', updateStaff);
+
+// 下拉框初始化
+function initDroplist() {
   try {
     // 清空select列表数据
     $('#subtask,#sSubtask, #status,#sStatus, #staff,#sStaff').empty();
@@ -50,7 +154,20 @@ function initSelect(serverUrl) {
   }
 }
 
-// 打开新建模态框
+// 员工变化，动态更新其对应工号
+function updateStaff() {
+  let val = $(this).children('option:selected').val();
+  if (val != 0) {
+    const index = $(this).get(0).selectedIndex;
+    const man = mans[index - 1];
+    $('#staffNo').val(man.no);
+  }
+  else {
+    $('#staffNo').val('');
+  }
+}
+
+// 新建模态框打开
 function addModal() {
   console.log('addPlan');
   // 表单重置
@@ -65,7 +182,7 @@ function addModal() {
   $('#plan').modal();
 }
 
-// 打开修改模态框，注意回填
+// 修改模态框打开，注意回填
 function editModal(data) {
   console.log('editPlan');
   // 表单重置
@@ -90,8 +207,8 @@ function editModal(data) {
   $('#plan').modal();
 }
 
-// 提交新建/修改计划
-function planSubmit() {
+// 新建/修改计划提交
+function submitPlan() {
   const titles = $('#title').val();
   // const startTime = $('#sDate').val();
   // const endTime = $('#eDate').val();
@@ -158,8 +275,8 @@ function planSubmit() {
   };
 }
 
-// 删除
-function planDelete(ID) {
+// 删除计划
+function deletePlan(ID) {
   try {
     console.log(ID);
     $.ajax({
