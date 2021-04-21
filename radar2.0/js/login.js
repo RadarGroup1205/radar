@@ -47,7 +47,7 @@ function loginIn() {
 			},
 			// 登录成功，返回用户权限等级和所在部门，并用户登录名一起构成一个用户对象字符串，缓存起来
 			success: function (res) {
-				if (res) {
+				if (res !== "-1") {
 					sessionStorage.setItem('loginState', '1');
 					const person = getUser(userName, res);
 					sessionStorage.setItem('user', person);

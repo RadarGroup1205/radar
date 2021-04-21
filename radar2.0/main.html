@@ -26,7 +26,7 @@
       <button id="btn_delete" type="button" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
       </button>
-      <button id="btn_detail" type="button" class="btn btn-success" tab-name= "detail" tab-layid ="22" tab-url="taskTable">
+      <button type="button" class="btn btn-success btn_detail" tab-name= "detail" tab-layid ="22" tab-url="taskTable"> 
         <span class="glyphicon glyphicon-detail" aria-hidden="true">
         </span>查看详情
       </button>
@@ -309,24 +309,24 @@
 
 <script>
   var serveUrl = 'http://10.222.6.46:8080/radar_db'
-  var data = ['49288-0957']
-  var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '计划开始时间', '计划结束时间', '计划维修周期', '负责部门', '负责人', '负责人工号', '任务状态', '维修结束时间', '维修工期']
+
   $(function () {
+
     var table = $('#任务基本属性').DataTable({
-      "ajax": serveUrl + "/Select",
+      "ajax": serveUrl + "/Select", 
 
       "columns": [
         { "data": "taskNo" },
         { "data": "taskName" },
         { "data": "equipmentNo" },
         { "data": "equipmentName" },
-        { "data": null },
-        { "data": null },
-        { "data": null },
+        { "data": "client" },
+        { "data": "enterDate" },
+        { "data": "exitDate" },
         { "data": "startTime" },
         { "data": "endTime" },
         { "data": "taskCycle" },
-        { "data": "department" },
+        { "data": "department" }, 
         { "data": "supervisor" },
         { "data": "supervisorNo" },
         { "data": "repairStarttime" },
@@ -335,6 +335,8 @@
         { "data": "cost" },
         { "data": "taskStatus" },
       ],
+      
+  
 
       "pagingType": "full_numbers",
 
@@ -365,11 +367,24 @@
         }
       },
 
-      "columnDefs": [{
-        "searchable": false,
-        "orderable": true,
-        "targets": 0
-      }],
+      "columnDefs": [
+        {
+          "searchable": false,
+          "orderable": true,
+          "targets": 0
+        },
+        {
+          "targets":1,
+          "render": function ( data, type, row, meta) {
+              if(type === 'display'){         
+                  data = '<a href="javascript:void(0);" class = "btn_detail">' + data + '</a>';               
+              }
+
+              return data;
+          }
+          
+        },
+      ],
       
       "order": [[1, 'asc']]
 
@@ -396,10 +411,13 @@
       }
     });
 
-    $('#任务基本属性 tbody').on('dblclick','tr',function(){
-      console.log(table.rows('.selected').data()[0].taskNo);
-      var taskno = table.rows('.selected').data()[0].taskNo
-      layui.use(['element','jquery'], function () {
+    $('#任务基本属性 tbody').on('click','td',function(event){
+      // console.log(table.rows('.selected').data()[0].taskNo);
+      for(let row of table.context[0].aoData){
+        if(row._aData.taskName == event.target.innerHTML){
+          console.log(row._aData.taskNo);
+          var taskno = row._aData.taskNo;
+          layui.use(['element','jquery'], function () {
           let element=parent.layui.element;
           //获取父级页面
           element.tabAdd('tabList',{
@@ -410,6 +428,12 @@
           element.tabChange('tabList',taskno)
 
            })
+        };
+      };
+      console.log(table.context[0].aoData[0]._aData);
+      console.log(event.target.parentElement.previousElementSibling.innerHTML)
+      // if(event.target.parentElement.previousElementSibling.innerHTML == "")
+
     });
     
     //添加按钮响应
@@ -593,22 +617,9 @@
       $("#deleteTaskModal").find('input').val('')
     });
 
-    
-  $('#btn_detail').click(function () {
-      console.log(table.rows('.selected').data()[0].taskNo);
-      var taskno = table.rows('.selected').data()[0].taskNo
-      layui.use(['element','jquery'], function () {
-          let element=parent.layui.element;
-          //获取父级页面
-          element.tabAdd('tabList',{
-              title:taskno+ "子任务详情",
-              content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="sub.html?'+taskno+'"></iframe>',
-              id: taskno //lay-id的值
-          })
-          element.tabChange('tabList',taskno)
+  
 
-           })
-       });
+       
   })
 
 
