@@ -28,10 +28,15 @@
                  <div class="layui-card-body">
                     <div id="EchartZhu" style="width: 100%;height:130%;"></div>
                  </div>
-            </div>
-
-            
+            </div>         
         </div>
+        <div class="center" style="width: 60%;">
+            <div class="layui-card " >
+                 <div class="layui-card-body">
+                    <div id="EchartPie" style="width: 100%;height:130%;"></div>
+                 </div>
+            </div>         
+        </div> 
        <div class="right" style="width: 30%;" >
         <table id="remincetable" class="layui-table">
             <colgroup>
@@ -50,6 +55,13 @@
                         <td>1</td>
                         <td >超期预警</td>
                         <td ><a id="checkit" class="layui-btn layui-btn-primary layui-btn-xs" ><u>查看</u></a></td>
+                        
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td >统计报表</td>
+                        <td ><a id="leading-out" class="layui-btn layui-btn-primary layui-btn-xs" ><u>导出</u></a></td>
+                        
                     </tr>
                 </tbody>
             </thead>
@@ -97,14 +109,14 @@
                 
         let serveUrl = 'http://10.222.6.46:8080/radar_db'
         var myChart = echarts.init(document.getElementById('EchartZhu'));
-        
         var labelRight = {
             position: 'right'
         };
         
         option = {
             title: {
-                text: '主任务进度时间',
+                text: '主任务进度时间'
+                
                 
             },
             tooltip: {
@@ -167,6 +179,11 @@
                 splitLine: {show: false},
                 data: []
             },
+            
+//              -------------------------------------------------饼状图----------------------------------------------------------------------------
+
+
+
             series: [
                 {
                     name: '已进行天数',
@@ -179,14 +196,94 @@
                     type: 'bar',
                     stack:"数量",
                     data: []
-                }
+                },
+                // {
+                //     name:'已完成主任务',
+                //     type:'pie',
+                //     radius: '50%',
+                //         center: ['70%', '50%'],
+                //         avoidLabelOverlap: false,
+                //         tooltip: {
+                //             trigger: 'item',
+                //             formatter: '{a} <br/>{b} : {c} ({d}%)'
+                //         },
+                //         data: data,
+                //         itemStyle:{
+                //             emphasis:{
+                //                 shadowBlur:10,
+                //                 shadowOFFsetX:0,
+                //                 shadowColor:'rgba(0,0,0,0.5)'
+                //             }
+                //         }
+
+                // }
             ]
         };
         myChart.setOption(option,true);
         myChart.showLoading();
+
+        var pieCharts = echarts.init(document.getElementById('EchartPie'));
+        option = {
+        title: {
+            text: '主任务完成情况',
+            subtext: '',
+            left: 'center'
+        },
+        tooltip: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {
+                    show: true, 
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'left',
+                            max: 1548
+                        }
+                    }
+                },
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data:[]
+        },
+        calculable:true,
+        series: [
+            {   
+                label:{
+                    normal:{
+                        formatter(v) {
+                        let text = v.name
+                        return text.length < 6 
+                            ? text 
+                            : `${text.slice(0,4)}\n${text.slice(4)}`
+                        }
+
+                    },
+                    
+                },
+                name:'',
+                type: 'pie',
+                radius: '50%',
+                center:['50%','60%'],
+                data: [],
+                
+            }
+        ]
+    };
+    pieCharts.setOption(option,true);
+
         var Name=[];
         var Time=[];
-        var Cycle=[];
+        var Cycle=[],WholeTime=[],nums=[];
         $.ajax({
             url:serveUrl+'/Select',
             type:'post',
@@ -196,28 +293,52 @@
            
            
             success:function(dt){
-                if(dt){
-                    for(var i=0;i<dt.data.length;i++){
-                        Name.push(dt.data[i].taskName);
+                
+                // if(dt){
+                //     for(var i=0;i<dt.data.length;i++){
+                //         Name.push(dt.data[i].taskName);
                        
-                    }
-                }
+                //     }
+                // }
                 if(dt){
                     for(var i=0;i<dt.data.length;i++){
-                        Time.push(1);
-                    }
-                }
-                if(dt){
-                    for(var i=0;i<dt.data.length;i++){
+                        var j =  Math.floor(Math.random()*dt.data[i].taskCycle);
+                        Name.push(dt.data[i].taskName+'('+dt.data[i].taskStatus+')');
+                        Time.push(j);
                         Cycle.push(dt.data[i].taskCycle-Time[i]);
+                        WholeTime.push(dt.data[i].taskCycle);
+                        var obj = new Object();
+                        obj.name = dt.data[i].taskName+'('+dt.data[i].taskStatus+')';
+                        obj.value = dt.data[i].taskCycle;
+                        nums.push(obj);
                     }
+                    
                 }
+                // $.each(dt,function(data){    
+                             
+                //     var obj = new Object();
+                //     obj.name = data.taskName;
+                //     obj.value = data.taskCycle;
+                //     nums.push(obj);
+                // });
+                
                 
                 myChart.hideLoading();
                 myChart.setOption({
                     yAxis:{data:Name},
                     series:[{data:Cycle},{data:Time}]
-                })
+                });
+
+                pieCharts.hideLoading();
+                pieCharts.setOption({
+                   legend:{
+                       data:Name
+                   },
+                   series:{
+                       name:['周期'],
+                       data:nums
+                   }
+                });
             },
             error:function(errorMsg){
                 alert("图表请求失败！");
