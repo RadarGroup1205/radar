@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>装备修理信息化控制平台</title>
-	<link href="layui/css/layui.css" rel="stylesheet" />
+	<link rel="stylesheet" href="layui/css/layui.css">
 	<link rel="stylesheet" href="css/main.css">
 
 </head>
@@ -39,7 +39,7 @@
 						<dd>
 							<hr>
 						</dd>
-						<dd><a href="login.html" class="login-out">退出登录</a></dd>
+						<dd><a href="login.html" class="logout" id="logout">退出登录</a></dd>
 					</dl>
 				</li>
 			</ul>
@@ -60,8 +60,8 @@
 					<li class="layui-nav-item">
 						<a href="javascript:;">计划安排</a>
 						<dl class="layui-nav-child">
-							<dd><a class="site-active" tab-name="月计划表" tab-url="plan.html" tab-layid="4">月计划表</a></dd>
-							<dd><a class="site-active" tab-name="周计划表" tab-url="plan-week.html" tab-layid="5">周计划表</a></dd>
+							<dd><a class="site-active" tab-name="计划管理" tab-url="plan.html" tab-layid="4">月计划表</a></dd>
+							<!-- <dd><a class="site-active" tab-name="周计划表" tab-url="plan-week.html" tab-layid="5">周计划表</a></dd> -->
 						</dl>
 					</li>
 					<li class="layui-nav-item">
@@ -103,16 +103,10 @@
 			© 装备修理信息化控制平台 - 底部固定区域
 		</div>
 	</div>
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="layui/layui.js"></script>
-	<script type="text/javascript" src="js/checklogin.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-	<script>
-		// 非法登录拦截并获得登录用户信息
-		const user = checkLogin();
-		// 右上角用户信息设置
-		setUser(user);
-	</script>
+	<script src="js/jquery.js"></script>
+	<script src="js/checklogin.js"></script>
+	<script src="layui/layui.js"></script>
+	<script src="js/main.js"></script>
 </body>
 
 </html>
