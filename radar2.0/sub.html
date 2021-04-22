@@ -374,11 +374,24 @@
             "sSortDescending": ": 以降序排列此列"
         }
       },
-      "columnDefs": [{
+      "columnDefs": [
+      {
         "searchable": false,
         "orderable": true,
         "targets": 0
-      }],
+      },
+      {
+          "targets":1,
+          "render": function ( data, type, row, meta) {
+              if(type === 'display'){         
+                  data = '<a href="javascript:void(0);" class = "btn_detail">' + data + '</a>';               
+              }
+
+              return data;
+          }
+          
+      },
+     ],
       "order": [[1, 'asc']]
       
     });
@@ -401,21 +414,47 @@
       }
     });
 
-    $('#任务基本属性 tbody').on('dblclick', 'tr', function () {
-      console.log(table.rows('.selected').data()[0].subtaskNo);
-    var subtaskno = table.rows('.selected').data()[0].subtaskNo
-    layui.use(['element','jquery'], function () {
-        var element=parent.layui.element;
-        //获取父级页面
-        element.tabAdd('tabList',{
-            title:subtaskno + "零部件维修任务详情",
-            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000px" ; scrolling="no" frameborder="no" src="part.html?'+subtaskno+'"></iframe>',
-            id:subtaskno //lay-id的值
-        })
-        element.tabChange('tabList',subtaskno)
+    // $('#任务基本属性 tbody').on('dblclick', 'tr', function () {
+    //   console.log(table.rows('.selected').data()[0].subtaskNo);
+    // var subtaskno = table.rows('.selected').data()[0].subtaskNo
+    // layui.use(['element','jquery'], function () {
+    //     var element=parent.layui.element;
+    //     //获取父级页面
+    //     element.tabAdd('tabList',{
+    //         title:subtaskno + "零部件维修任务详情",
+    //         content:'<iframe id="iframeMain" style="width: 100%" ; height="1000px" ; scrolling="no" frameborder="no" src="part.html?'+subtaskno+'"></iframe>',
+    //         id:subtaskno //lay-id的值
+    //     })
+    //     element.tabChange('tabList',subtaskno)
 
-       })
+    //    })
+    // });
+
+    $('#任务基本属性 tbody').on('click','td',function(event){
+      // console.log(table.rows('.selected').data()[0].taskNo);
+      for(let row of table.context[0].aoData){
+        if(row._aData.moduleName == event.target.innerHTML){
+          console.log('????????',row._aData.subtaskNo);
+          var subtaskno = row._aData.subtaskNo;
+          layui.use(['element','jquery'], function () {
+          let element=parent.layui.element;
+          //获取父级页面
+          element.tabAdd('tabList',{
+              title:subtaskno+ "子任务详情",
+              content:'<iframe id="iframeMain" style="width: 100%"; height="1000px";  scrolling="no" frameborder="no" src="part.html?'+subtaskno+'"></iframe>',
+              id: subtaskno //lay-id的值
+          })
+          element.tabChange('tabList',subtaskno)
+
+           })
+        };
+      };
+      console.log(table.context[0].aoData[0]._aData);
+      console.log(event.target.parentElement.previousElementSibling.innerHTML)
+      // if(event.target.parentElement.previousElementSibling.innerHTML == "")
+
     });
+
 
 
     $("#btn_add").click(function () {

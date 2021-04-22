@@ -36,7 +36,7 @@ function login() {
 				},
 				success: function (data) {
 					// 登录成功
-					if (data) {
+					if (data !== '-1') {
 						// 更新登录状态
 						sessionStorage.setItem('loginState', '1');
 						// 返回用户权限等级和所在部门，并用户登录名一起构成一个用户对象，以字符串形式缓存起来

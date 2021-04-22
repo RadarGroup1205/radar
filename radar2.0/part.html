@@ -300,7 +300,7 @@
                     }else{
                       str = "0" ;
                     }
-  console.log(str)
+  console.log("!!!!!!",str)
 
   function subtaskdata(data ,value) {
     var value = [];
@@ -317,6 +317,7 @@
                 for(i in data_){
                  //  console.log(data_[i].subtaskNo)
                   if(data_[i].subtaskNo == str){
+                    console.log('111111111')
                     value.push(data_[i]);
                   }else if(str == '0'){
                     value = data_;

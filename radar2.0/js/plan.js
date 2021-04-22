@@ -3,6 +3,7 @@ let user = sessionStorage.getItem('user');
 user = JSON.parse(user);
 const userName = user.name;
 
+// 方法渲染表格
 layui.use('table', function () {
   var table = layui.table;
 
@@ -83,14 +84,6 @@ layui.use('table', function () {
   });
 });
 
-// 监听按钮
-$(document).ready(function () {
-  // 提交
-  $('#submit').click(function () {
-    submitPlan();
-  })
-});
-
 // initDate($('#ssDate,#seDate'), 0);
 
 // 姓名与工号动态绑定
@@ -98,9 +91,15 @@ $(document).ready(function () {
 let mans = [];
 // 初始化下拉框选项
 initDroplist();
+
 // 职员变化，关联工号变化
 const staff = document.querySelector('#staff');
 staff.addEventListener('input', updateStaff);
+
+// 提交按钮注册点击事件
+const submit = document.querySelector('#submit');
+submit.addEventListener('click', submitPlan);
+
 
 // 下拉框初始化
 function initDroplist() {
@@ -207,7 +206,7 @@ function editModal(data) {
   $('#plan').modal();
 }
 
-// 新建/修改计划提交
+// 提交新建/修改计划
 function submitPlan() {
   const titles = $('#title').val();
   // const startTime = $('#sDate').val();
