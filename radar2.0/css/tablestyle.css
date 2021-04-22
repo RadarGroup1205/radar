@@ -1,0 +1,27 @@
+.content {
+  margin: 5px auto;
+  /* 不需要边框，这里删除*/
+  padding: 0px;
+}
+
+.operation {
+  margin: 10px;
+}
+
+.operation>button {
+  margin: 10px;
+}
+
+.center-block {
+  display: block;
+  width: 21%;
+  margin: auto;
+}
+
+.modal-dialog {
+  width: 760px;
+}
+
+.col-sm {
+  min-width: 80px;
+}

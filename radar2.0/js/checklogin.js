@@ -1,13 +1,16 @@
-//检查是否登录
-function checkLog() {
-	//获取跳转之前的页面url
-	// sessionStorage.setItem('returnUrl', window.location.href)
-	var a = sessionStorage.getItem('loginState');
-	// console.log(a);
-	if (!a) {
-		// alert('没有登录，即将跳转至登录界面......');
-		window.location.href = 'login.html';
-	} else {
-		return JSON.parse(a).Sno;
+// 检查是否登录
+checkLogin();
+// 无论登录前什么页面，都要到index.html，不存，不实现在index.html下打开登录前的页面
+function checkLogin() {
+	try {
+		// 以登录状态记录是否登录
+		const state = sessionStorage.getItem('loginState');
+		// 未登录，跳转至登录页面
+		if (!state) {
+			window.location.href = 'login.html';
+		}
+	}
+	catch (ex) {
+		alert(ex.message);
 	}
 }

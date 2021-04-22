@@ -8,46 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="js/jquery.js"></script>
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/tablestyle.css">
   <script src="js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
   <script src="js/jquery.dataTables.js"></script>
-  <link href="css/layui.css" rel="stylesheet" />
-  <script src="js/layui.js"></script>
+  <script src="layui/layui.js"></script>
   <!--<script src ="../js/table.js" ></script>-->
-  <style>
-    .content {
-      margin: 50px auto;
-      border: 1px solid #ccc;
-    }
-
-    .operation {
-      margin: 10px;
-    }
-
-    .operation>button {
-      margin: 10px;
-    }
-
-    #books_length {
-      float: left;
-      margin-left: 20px;
-    }
-
-    #books_filter {
-      float: right;
-      margin-right: 20px;
-    }
-
-    #books {
-      margin: 5px;
-    }
-
-    .center-block {
-      display: block;
-      width: 21%;
-      margin: auto;
-    }
-  </style>
 </head>
 <body>
   
@@ -68,7 +34,7 @@
       </button>
     </div>
 
-    <div class="modal fade" id="addBook" role="dialog">
+    <div class="modal fade" id="addTask" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -276,7 +242,6 @@
           <th>任务编号</th>
           <th>设备名称</th>
           <th>负责人</th>
-          <th>负责人工号</th>
           <th>所属部门</th>
           <th>计划开始时间</th>
           <th>计划结束时间</th>
@@ -328,13 +293,16 @@
   var titles = ['任务编号', '任务名称', '维修设备名称', '维修设备编号', '任务开始时间','任务维修周期','负责部门','负责人','任务状态']
 
   var str = location.search
-  if (str.indexOf("?") != -1) {
+  if (str.indexOf("?") != -1) { //判断search是否存在
                         var str = str.substr(1);
+                    }else{
+                        var str = '0';
                     }
-  console.log(str)
+  console.log(str);
 
   function subtaskdata(value) {
-    console.log("成功执行函数")
+    console.log("成功执行函数");
+    var value = [];
     $.ajax({
         url: serveUrl+ "/SubSelect",
         type:"post",
@@ -344,35 +312,34 @@
         success:function(result){
             if(result != null && result != "" && result != undefined){
                 var data_ = result.data;
-                console.log(data_)
+                // console.log(data_)
                 for(i in data_){
                   if(data_[i].taskNo == str){
-                    value = data_[i]
-                  }
+                    value.push(data_[i]);
+                  }else if(str == '0'){
+                    value = data_;
+            }
                 }
             }
+        },
+        error:function(){
+          console.log('请求子任务数据失败！')
         }
     }
     )
     return value;
   }
   data = subtaskdata();
-  console.log(data)
-  data1=[]
-  data1.push(data)
-  console.log(data1)
+  //console.log(data);
 
   $(function () {
     var table = $('#任务基本属性').DataTable({
-      //"ajax": {url :serveUrl + "/SubSelect"},
-      "data": data1,
-  
+      "data": data,
       "columns": [
                 { "data": "subtaskNo" },
                 { "data": "moduleName" },
                 { "data": "supervisor" },
-                { "data": "supervisorNo" },
-                { "data": "taskNo" },
+                { "data": "department" },
                 { "data": "planStarttime" },
                 { "data": "planEndtime" },
                 { "data": "realStarttime" },
@@ -433,6 +400,40 @@
         $(this).addClass('selected');
       }
     });
+
+    $('#任务基本属性 tbody').on('dblclick', 'tr', function () {
+      console.log(table.rows('.selected').data()[0].subtaskNo);
+    var subtaskno = table.rows('.selected').data()[0].subtaskNo
+    layui.use(['element','jquery'], function () {
+        var element=parent.layui.element;
+        //获取父级页面
+        element.tabAdd('tabList',{
+            title:subtaskno + "零部件维修任务详情",
+            content:'<iframe id="iframeMain" style="width: 100%" ; height="1000px" ; scrolling="no" frameborder="no" src="part.html?'+subtaskno+'"></iframe>',
+            id:subtaskno //lay-id的值
+        })
+        element.tabChange('tabList',subtaskno)
+
+       })
+    });
+
+
+    $("#btn_add").click(function () {
+      console.log('add');
+      $("#addTask").modal({backdrop: 'static', keyboard: false})  // 当用户点击模态框外部时不会关闭模态框
+      //获得服务器当前时间并设为初始值
+      var time = new Date();
+      var year = time.getFullYear();
+      var month = ("0" + (time.getMonth() + 1)).slice(-2);
+      var day = ("0" + time.getDate()).slice(-2);
+      var today = year + "-" + (month) + "-" + (day);
+      $("#pStartTime").attr("min", today);
+      $('#pStartTime').val(today);
+      $('#pEndTime').val(today);
+      var Tasknum = 'T0000' +  (table.column(0).data().length + 1);// 计算 新增的 任务编号
+      $('#taskNo').val(Tasknum);
+    });
+
 
     $("#cancelAdd").on('click', function() {
       console.log('cancelAdd');
@@ -556,54 +557,9 @@
         })
         element.tabChange('tabList',subtaskno)
 
-})
-
+       })
     });
-
-
-
   })
-
-  function addUser() {
-        $.ajax({  
-            type:"post",
-            url:"/user/add",
-            async:true,
-            data:{
-                userName: $("#addUserName").val(),
-                userAddr: $("#addUserAddr").val(),
-                status: $("#addStatus").val(),
-                roleId: $("#addRole").val()
-            },
-            success:function(res){
-                // 刷新表格数据，分页信息不会重置
-                firstTable.ajax.reload(null,false);
-                //清空添加表单数据
-                clearAddData();
-                alert(res)
-            }
-        });
-    }
-
-    function deleteData(id) {
-        $.ajax({
-            type:"get",
-            url:"/user/delete",
-            async:true,
-            data:{
-                userId: id
-            },
-            success:function(res){
-                // 刷新表格数据，分页信息不会重置
-                firstTable.ajax.reload(null,false);
-
-                alert(res)
-            }
-        });
-    }
-
-  
-
 </script>
 
 </html>

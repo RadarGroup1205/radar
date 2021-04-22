@@ -8,40 +8,6 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<title>个人信息</title>
 	<link rel="stylesheet" type="text/css" href="css/layui.css" />
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script>
-		// 初始化加载
-		$(function () {
-
-			try {
-				var strName = sessionStorage.getItem('userName');
-				var numType = Number(sessionStorage.getItem('userType'));
-				var strType = '用户';
-				switch (numType) {
-					case 0:
-						strType = '超级管理员';
-						break;
-					case 1:
-						strType = '主任务管理员';
-						break;
-					case 2:
-						strType = '子任务管理员';
-						break;
-					case 3:
-						strType = '维修人员';
-						break;
-					default:
-						alert('没有此用户类型' + numType);
-				}
-				$("#uiName").val(strName);
-				$("#uiType").val(strType);
-			}
-			catch (ex) {
-				alert(ex.message);
-			}
-
-		});
-	</script>
 </head>
 
 <body>
@@ -52,14 +18,13 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">登录名：</label>
 						<div class="layui-input-block">
-							<input type="text" id="uiName" disabled autocomplete="off" class="layui-input layui-disabled" value="Hi">
+							<input type="text" id="name" disabled autocomplete="off" class="layui-input layui-disabled" value="Hi">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">用户类型：</label>
 						<div class="layui-input-block">
-							<input type="text" id="uiType" disabled autocomplete="off" class="layui-input layui-disabled"
-								value="1">
+							<input type="text" id="type" disabled autocomplete="off" class="layui-input layui-disabled" value="1">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -84,14 +49,20 @@
 			</div>
 		</div>
 	</div>
+	<script src="js/jquery.js"></script>
 	<script src="js/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/checklogin.js"></script>
 	<script>
-		//Demo
+		// 非法登录拦截并获得登录用户信息
+		const user = checkLogin();
+		$("#name").val(user.name);
+		$("#type").val(user.type);
+		// Demo
 		layui.use(['form', 'element'], function () {
 			var form = layui.form();
 			var element = layui.element();
 			form.render();
-			//监听信息提交
+			// 监听信息提交
 			form.on('submit(adminInfo)', function (data) {
 				layer.msg(JSON.stringify(data.field));
 				return false;

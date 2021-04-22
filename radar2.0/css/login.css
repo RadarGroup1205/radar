@@ -1,9 +1,19 @@
 * {
   margin: 0;
   padding: 0;
+  /* css3盒子模型 */
+  box-sizing: border-box;
 }
 a {
   text-decoration: none;
+}
+button,
+input {
+    /* "\5B8B\4F53" 就是宋体的意思 这样浏览器兼容性比较好 */
+    font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    /* 默认有灰色边框我们需要手动去掉 */
+    border: 0; 
+    outline: none;
 }
 .box {
   /* 用绝对定位设置盒子水平垂直居中，注意负号 */
@@ -37,14 +47,17 @@ a {
   width: 100%;
   height: 220px;
 }
-.main input {
+.main input,
+.main button {
   /* 转为块元素，盒子模型 */
   display: block;
   margin: 20px auto;
   padding: 0 1em;
-  border: 1px solid #dad9d6;
   width: 350px;
   height: 50px;
+}
+.main input {
+  border: 1px solid #dad9d6;
 }
 .main .btn {
   font-size: 18px;

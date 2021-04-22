@@ -2,63 +2,83 @@
 // let serverUrl = 'http://202.114.41.165:8080/radar_db'
 const serverUrl = 'http://10.222.6.46:8080/radar_db'
 
-// 用回车提交数据
-function keyLogin() {
-	if (event.key == 'Enter')                                        //回车键的键值为13
-		document.getElementById('submit').click();                  //调用登录按钮的登录事件
-}
+// 注册登录事件
+// 点击登录按钮触发登录
+const btn = document.querySelector('#login-btn');
+btn.addEventListener('click', login);
+// 敲回车触发登录
+const main = document.querySelector('.main');
+main.addEventListener('keydown', function (event) {
+	if (event.key == 'Enter')
+		login();
+})
 
-// 登录按钮事件响应
-function getUser() {
-
+// 登录函数
+function login() {
 	try {
 		// 获取登录用户信息
-		const username = document.getElementById('username').value;
+		const userName = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 
-		// Ajax提交表单前校验，都不能为空
-		if (username == '' || password == '') {
+		// Ajax提交表单前校验
+		if (userName == '' || password == '') {
 			alert('用户名和密码不能为空！');
 			return false;
 		}
-
-		// Ajax提交表单数据
-		$.ajax({
-			url: serverUrl + '/Load',                                   //后台提供的服务器（接口）
-			type: 'post',
-			data: {
-				name: username,
-				pwd: md5(password)
-			},
-			success: function (data) {                                  //data，接口返回来的用户权限等级
-				console.log(data);
-
-				if (data) {                                        //登录成功，状态变为已登录，将登录名和用户类型存储到本地
-					sessionStorage.setItem('loginState', '1');
-					sessionStorage.setItem('userName', username);
-					sessionStorage.setItem('userType', data);
-					console.log('登录成功');
-					console.log(sessionStorage.getItem('userName'));
-					window.location.href = 'index.html';
+		else {
+			// Ajax提交表单数据
+			$.ajax({
+				url: serverUrl + '/Load',
+				type: 'post',
+				data: {
+					name: userName,
+					pwd: md5(password)
+				},
+				success: function (data) {
+					// 登录成功
+					if (data) {
+						// 更新登录状态
+						sessionStorage.setItem('loginState', '1');
+						// 返回用户权限等级和所在部门，并用户登录名一起构成一个用户对象，以字符串形式缓存起来
+						const user = setUser(userName, data);
+						sessionStorage.setItem('user', user);
+						window.location.href = 'index.html';
+					}
+					// 用户名/密码错误
+					else {
+						alert('请输入正确的用户名和密码！');
+						window.location.reload();
+					}
+				},
+				error: function (msg) {
+					alert('登录失败\n网络连接错误' + JSON.stringify(msg));
 				}
-				else {
-					alert('请输入正确的用户名和密码！');
-					window.location.reload();
-				}
-			},
-			error: function (msg) {
-				alert('登录失败\n网络连接错误' + JSON.stringify(msg));
-			}
-			// error: function (XMLHttpRequest, textStatus, errorThrown) {
-			// 	alert(XMLHttpRequest.status);                             //状态
-			// 	alert(XMLHttpRequest.readyState);                         //状态码
-			// 	alert(textStatus);                                      	//错误信息
-			// }
-		});
+				// error: function (XMLHttpRequest, textStatus, errorThrown) {
+				// 	alert(XMLHttpRequest.status);                             //状态
+				// 	alert(XMLHttpRequest.readyState);                         //状态码
+				// 	alert(textStatus);                                      	//错误信息
+				// }
+			});
+		}
 
 	} catch (error) {
 		window.location.reload();
 		alert(error.name + error.message);
 	}
+}
 
+// 生成一个用户对象，字符串形式
+function setUser(userName, strUser) {
+	// 对象字符串转对象
+	let user = JSON.parse(strUser);
+	const userType = user.result;
+	const userDepart = user.department;
+	const person = {
+		name: userName,
+		type: userType,
+		depart: userDepart
+	}
+	// 对象转对象字符串
+	user = JSON.stringify(person);
+	return user;
 }

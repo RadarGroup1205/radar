@@ -1,45 +1,14 @@
-// 非法登录拦截
-const no = checkLog();
+// 登录成功后右上角显示用户信息
+showUser();
 
-// 初始化加载
-$(function () {
-
-	try {
-		var strName = sessionStorage.getItem('userName');
-		var numType = Number(sessionStorage.getItem('userType'));
-		var strType = '用户';
-		switch (numType) {
-			case 0:
-				strType = '超级管理员';
-				break;
-			case 1:
-				strType = '主任务管理员';
-				var divD = document.getElementById('3');                // 隐藏零部件维修表
-				divD.style.display = 'none';
-				break;
-			case 2:
-				strType = '子任务管理员';
-				var divD = document.getElementById('1');                // 隐藏主任务维修表
-				divD.style.display = 'none';
-				break;
-			case 3:
-				strType = '维修人员';
-				var divD = document.getElementById('1');                // 隐藏主任务、子任务维修表
-				divD.style.display = 'none';
-				divD = document.getElementById('2');
-				divD.style.display = 'none';
-				break;
-			default:
-				alert('没有此用户类型' + numType);
-		}
-		var strMsg = strName + '[' + strType + ']'
+function showUser() {
+	let user = sessionStorage.getItem('user');
+	if (user) {
+		user = JSON.parse(user);
+		const strMsg = user.name + '[' + user.depart + ']';
 		$("#user").html(strMsg);
 	}
-	catch (ex) {
-		alert(ex.message);
-	}
-
-});
+}
 
 layui.use(['element', 'jquery'], function () {
 	var element = layui.element,
@@ -108,16 +77,26 @@ layui.use(['element', 'jquery'], function () {
 		FrameWH();
 	})
 
-	// 切换用户
-	$('.user-trans').on("click", function () {
-		var type = $(this).attr("type-id");
-		sessionStorage.setItem('userType', type);
-		window.location.reload();
-	})
-
-	// 退出登录
-	$('.login-out').on("click", function () {
-		window.location.href = 'login.html';
-	})
-
 });
+
+//为tab设置拖拽属性，拖拽调换位置待续
+var srcdiv = null;
+var temp = null;
+$(".layui-tab-title").click(function (event) {
+	event.target.setAttribute("draggable", "true");
+	console.log(event.target.getAttribute("lay-id"))
+	temp = event.target.getAttribute("lay-id")
+	// $(this).children("li").on("click",function(){
+	// 	console.log("我尽力了。。。。")
+	// })
+})
+document.getElementsByClassName("layui-tab-title")[0].addEventListener('ondragenter', function (event) {
+	console.log("1111111")
+})
+
+// 退出登录
+$('#logout').on('click', function () {
+	sessionStorage.removeItem('loginState');
+	sessionStorage.removeItem('user');
+	window.location.href = 'login.html';
+})

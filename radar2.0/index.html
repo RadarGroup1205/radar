@@ -5,23 +5,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>装备修理信息化控制平台</title>
-	<link href="layui/css/layui.css" rel="stylesheet" />
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/checklogin.js"></script>
+	<link rel="stylesheet" href="layui/css/layui.css">
 	<link rel="stylesheet" href="css/main.css">
-	<style>
-		.site-active:hover {
-			cursor: pointer;
-		}
 
-		.login-out:hover {
-			cursor: pointer;
-		}
-
-		.user-trans:hover {
-			cursor: pointer;
-		}
-	</style>
 </head>
 
 <body class="layui-layout-body">
@@ -53,7 +39,7 @@
 						<dd>
 							<hr>
 						</dd>
-						<dd><a href="login.html" class="login-out">退出登录</a></dd>
+						<dd><a href="login.html" class="logout" id="logout">退出登录</a></dd>
 					</dl>
 				</li>
 			</ul>
@@ -64,28 +50,29 @@
 				<!-- 左侧导航区域（垂直导航） -->
 				<ul class="layui-nav layui-nav-tree" lay-filter="test">
 					<li class="layui-nav-item layui-nav-itemed">
-						<a class="" href="javascript:;">维修任务管理</a>
+						<a href="javascript:;">任务管理</a>
 						<dl class="layui-nav-child">
-							<dd id="1"><a class="site-active" tab-name="主任务维修表" tab-url="main.html" tab-layid="1">主任务维修表</a></dd>
-							<dd id="2"><a class="site-active" tab-name="子任务维修表" tab-url="sub.html" tab-layid="2">子任务维修表</a></dd>
-							<dd id="3"><a class="site-active" tab-name="零部件维修表" tab-url="part.html" tab-layid="3">零部件维修表</a></dd>
-						</dl>
-					</li>
-					<li class="layui-nav-item">
-						<a href="javascript:;">装备信息管理</a>
-						<dl class="layui-nav-child">
-							<dd><a class="site-active" tab-name="雷达信息" tab-url="radarinfo.html" tab-layid="6">雷达信息</a></dd>
-							<dd><a class="site-active" tab-name="零部件信息" tab-url="partinfo.html" tab-layid="7">零部件信息</a></dd>
+							<dd><a class="site-active" tab-name="主任务表" tab-url="main.html" tab-layid="1">主任务表</a></dd>
+							<dd><a class="site-active" tab-name="子任务表" tab-url="sub.html" tab-layid="2">子任务表</a></dd>
+							<dd><a class="site-active" tab-name="部件表" tab-url="part.html" tab-layid="3">部件表</a></dd>
 						</dl>
 					</li>
 					<li class="layui-nav-item">
 						<a href="javascript:;">计划安排</a>
 						<dl class="layui-nav-child">
-							<dd><a class="site-active" tab-name="月计划" tab-url="plan.html" tab-layid="8">月计划</a></dd>
-							<dd><a class="site-active" tab-name="周计划" tab-url="plan-week.html" tab-layid="9">周计划</a></dd>
+							<dd><a class="site-active" tab-name="计划管理" tab-url="plan.html" tab-layid="4">月计划表</a></dd>
+							<!-- <dd><a class="site-active" tab-name="周计划表" tab-url="plan-week.html" tab-layid="5">周计划表</a></dd> -->
 						</dl>
+					</li>
 					<li class="layui-nav-item">
-						<a class="site-active" tab-name="基本资料" tab-url="user.html" tab-layid="10">用户管理</a>
+						<a href="javascript:;">装备信息</a>
+						<dl class="layui-nav-child">
+							<dd><a class="site-active" tab-name="雷达信息" tab-url="radarinfo.html" tab-layid="6">雷达信息</a></dd>
+							<dd><a class="site-active" tab-name="部件信息" tab-url="partinfo.html" tab-layid="7">部件信息</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a class="site-active" tab-name="基本资料" tab-url="user.html" tab-layid="8">用户管理</a>
 					</li>
 					<li class="layui-nav-item"><a href="#">系统设置</a></li>
 				</ul>
@@ -116,9 +103,10 @@
 			© 装备修理信息化控制平台 - 底部固定区域
 		</div>
 	</div>
-	<script type="text/javascript" src="layui/layui.js"></script>
-
-	<script type="text/javascript" src="js/main.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/checklogin.js"></script>
+	<script src="layui/layui.js"></script>
+	<script src="js/main.js"></script>
 </body>
 
 </html>
